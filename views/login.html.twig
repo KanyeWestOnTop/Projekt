@@ -1,0 +1,20 @@
+{% extends "layout.html.twig" %}
+{% block styles %}login{% endblock %}
+{% block title %}LoginPage{% endblock %}
+{% block content %}
+    <h1>Login</h1>
+    <div class="row">
+        <form method="POST" action="/">
+            <div class="form-group">
+                <label for="us_email">Email address</label>
+                <input type="email" class="form-control" id="us_email" aria-describedby="emailHelp" placeholder="Enter email">
+            <div class="form-group">
+                <label for="us_password">Password</label>
+                <input type="password" class="form-control" id="us_password" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <br>
+        <a href="/register" class="register">Register</a>
+    </div>
+{% endblock %}

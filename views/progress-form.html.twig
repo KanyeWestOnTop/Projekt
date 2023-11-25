@@ -1,0 +1,34 @@
+{% extends "layout.html.twig" %}
+{% block styles %}progress-form{% endblock %}
+{% block title %}Progress Form{% endblock %}
+{% block content %}
+    <div class="row">
+        {% if progress %}
+            <h1> Edit Progress</h1>
+        {% else %}
+            <h1> New Progress</h1>
+        {% endif %}
+        <form method="POST" action="{% if progress %}/progress/{{ progress.id }}{% else %}/progress{% endif %}">
+            {% if progress %}
+                <input type="hidden" id="_method" name="_method" value="PUT" /> 
+            {% endif %}
+            <label for="weight">Weight: </label>
+            <input type="text" name="weight" id="weight" value="{{ progress.weight }}">
+            <label for="reps">Reps: </label>
+            <input type="text" name="reps" id="reps" value="{{ progress.reps }}">
+            <label for="date">Date: </label>
+            <input type="text" name="date" id="date" value="{{ progress.date }}">
+            {% if not progress %}
+            <label for="exercise_id">Select Exercise: </label>
+                {% for exercise in exercises %}
+                    <div class="form-check">
+                        <label class="form-check-label">{{ exercise.name }}</label>
+                            <input type="radio" name="exercise_id" id="exercise_id" value="{{ exercise.id }}">
+                    </div>
+            {% endfor %} 
+            {% endif %}
+            <button class="btn btn-primary">Submit</button>
+        </form>
+        <a href="/" class="btn btn-success home">Home</a>
+    </div>
+{% endblock %}

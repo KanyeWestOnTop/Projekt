@@ -1,0 +1,31 @@
+{% extends "layout.html.twig" %}
+{% block styles %}register{% endblock %}
+{% block title %}Register Page{% endblock %}
+{% block content %}
+    <h1>Register</h1>
+    <div class="row">
+        <form method="POST" action="/">
+            <div class="form-group">
+                <label for="prename">Name</label>
+                <input type="text" class="form-control" id="prename" aria-describedby="emailHelp" placeholder="Enter name">
+            </div>
+            <div class="form-group">
+                <label for="lastname">Lastname</label>
+                <input type="text" class="form-control" id="lastname" aria-describedby="emailHelp" placeholder="Enter lastname">
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="NEWJEANS">
+            </div>
+            <div class="form-group">
+                <label for="password">Password bestätigen</label>
+                <input type="password" class="form-control" id="password" placeholder="KANYEWEST">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <br>
+        <a href="/register" class="register">Login</a>
+    </div>
+{% endblock %}

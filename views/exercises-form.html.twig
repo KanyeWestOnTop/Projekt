@@ -1,0 +1,14 @@
+{% extends "layout.html.twig" %}
+{% block styles %}exercises-form{% endblock %}
+{% block title %}Exercises Form{% endblock %}
+{% block content %}
+    <div class="row">
+        <h1>Create New Exercise</h1>
+        <form method="POST" action="/exercises">
+            <label for="name">Exercise: </label>
+            <input type="text" name="name" id="name">
+            <button class="btn btn-primary">Submit</button>
+        </form>
+        <a href="/" class="btn btn-success home">Home</a>
+    </div>
+{% endblock %}
