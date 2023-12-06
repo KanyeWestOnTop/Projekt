@@ -4,78 +4,87 @@ namespace App\Gateway;
 
 use PDO;
 
-abstract class BasicTableGateway
-{
+abstract class BasicTableGateway {
 
     private PDO $connection;
     protected string $table;
     protected array $columns;
     protected string $primary = "id";
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->connection = new PDO("mysql:host=mysql;dbname=MyTraining", "root", "test05");
     }
 
-    public function all(): array
-    {
+    public function all(): array {
         $sql = $this->connection->prepare("SELECT * FROM $this->table");
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function findById(int $id): array|false
-    {
+    public function findById (int $id): array|false {
         $sql = $this->connection->prepare("SELECT * FROM $this->table WHERE $this->primary = $id");
         $sql->execute();
         return $sql->fetch(PDO::FETCH_ASSOC);
+    
     }
-
-    public function insert(array $data): int
-    {
+    public function insert(array $data): int {
         $columns = implode(",", array_keys($data));
-        $placeholder = str_repeat("?, ", count($data) - 1) . "?";
+        $placeholder = str_repeat("?, ", count($data) -1) . "?";
         $values = array_values($data);
-
+        
         $sql = "INSERT INTO $this->table($columns) VALUES($placeholder)";
-
+        
         $stmt = $this->connection->prepare($sql);
         $stmt->execute($values);
-
+        
         return $this->connection->lastInsertId();
     }
-
-    public function update(int $id, array $data): void
-    {
+   
+    public function update(int $id, array $data): void {
+        //UPDATE book SET title = 'x', author = 'y' WHERE id = 1
+        //UPDATE $this->table SET title = ?, author = ? WHERE $this->primary = $id
         $values = [];
         $columns = "";
 
-        foreach ($data as $key => $value) {
+        foreach ( $data as $key=>$value) {
             $columns .= "$key = ?,";
             $values[] = $value;
         }
+    
+
         $columns = rtrim($columns, ",");
 
         $sql = "UPDATE $this->table SET $columns WHERE $this->primary = $id";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute($values);
     }
-
-    public function delete(int $id): void
-    {
+    public function delete(int $id): void {
         $sql = $this->connection->prepare("DELETE FROM $this->table WHERE $this->primary = $id");
         $sql->execute();
     }
-
-    public function saveRelation(int $objId, array $relationIds, string $relationTable, string $type = null, string $intermediateTable = null): void
-    {
-        if ($type == "n") {
+    public function saveRelation(int $objId, array $relationIds, string $relationTable, string $type = null, string $intermediateTable = null, array $pivotFields = []): void {
+        if ($type == "n") { 
             $sql = "DELETE FROM $intermediateTable WHERE {$this->table}_id = $objId";
             $stmt = $this->connection->prepare($sql);
             $stmt->execute();
 
-            foreach ($relationIds as $relationId) {
-                $sql = "INSERT INTO $intermediateTable ({$this->table}_id, {$relationTable}_id) VALUES ($objId, $relationId)";
+            foreach($relationIds as $relationId) {
+                $fields = "{$this->table}_id, {$relationTable}_id";
+                $values = "$objId, $relationId";
+
+                foreach($pivotFields as $key => $pivotField) {
+                    $value = $pivotField[$relationId];
+                    $value = $value[0];
+
+                    if (!$value) {
+                        $value = "NULL";
+                    }
+
+                    $fields .= ", $key";
+                    $values .= ", $value";
+                }
+
+                $sql = "INSERT INTO $intermediateTable ($fields) VALUES ($values)";
                 $stmt = $this->connection->prepare($sql);
                 $stmt->execute();
             }
@@ -84,17 +93,20 @@ abstract class BasicTableGateway
             $stmt = $this->connection->prepare($sql);
             $stmt->execute();
         }
+
     }
 
-    public function getRelation(int $objId, string $relationTable, string $type = null, string $intermediateTable = null): array
-    {
+    public function getRelation(int $objId, string $relationTable, string $type = null, string $intermediateTable = null): array {
         if ($type == "n") {
             // SELECT * FROM actor AS p LEFT JOIN AS i ON p.id = i.actor_id WHERE i.movie_id = $id
             $sql = "SELECT * FROM $relationTable AS p LEFT JOIN $intermediateTable AS i on p.id = i.{$relationTable}_id WHERE i.{$this->table}_id = $objId";
+            $stmt = $this->connection->prepare($sql);
+
         } else {
             $sql = "SELECT * FROM $relationTable WHERE {$this->table}_id = $objId";
+            $stmt = $this->connection->prepare($sql);
         }
-        $stmt = $this->connection->prepare($sql);
+
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

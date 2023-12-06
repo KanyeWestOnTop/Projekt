@@ -7,7 +7,7 @@ use Twig\Loader\FilesystemLoader;
 
 class DefaultController
 {
-
+    
     private Environment $twig;
 
     public function __construct()
@@ -26,3 +26,5 @@ class DefaultController
         header("Location: $path");
     }
 }
+
+

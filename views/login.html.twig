@@ -4,13 +4,13 @@
 {% block content %}
     <h1>Login</h1>
     <div class="row">
-        <form method="POST" action="/">
+        <form method="POST" action="/login">
             <div class="form-group">
-                <label for="us_email">Email address</label>
-                <input type="email" class="form-control" id="us_email" aria-describedby="emailHelp" placeholder="Enter email">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
             <div class="form-group">
-                <label for="us_password">Password</label>
-                <input type="password" class="form-control" id="us_password" placeholder="Password">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>

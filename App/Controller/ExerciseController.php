@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Model\Exercise;
-use App\Model\Progress;
 
 class ExerciseController extends DefaultController
 {
@@ -24,13 +23,11 @@ class ExerciseController extends DefaultController
     }
     public function create()
     {
-        $trainings = new Progress();
-        $this->render("exercises-form.html.twig", [
-            "trainings" => $trainings
-        ]);
+        $this->render("exercises-form.html.twig");
     }
     public function update(int $id, array $data)
     {
+
         $exercise = Exercise::findById($id);
         $exercise->setName($data['name']);
         $exercise->save();
@@ -51,4 +48,5 @@ class ExerciseController extends DefaultController
         $exercise->delete();
         $this->redirect("/exercises");
     }
+
 }

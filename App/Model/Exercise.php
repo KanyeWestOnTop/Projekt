@@ -5,7 +5,7 @@ use App\Gateway\ExerciseGateway;
 
 class Exercise {
     private int $id = 0;
-    private string $name;
+    private string $name = "";
 
     public function getId(): int {
         return $this->id;
@@ -59,7 +59,7 @@ class Exercise {
     private static function create(array $tmpExercise): Exercise {
         $exercise = new Exercise();
         $exercise->id = $tmpExercise["id"];
-        $exercise->setName($tmpExercise["name"]);
+        $exercise->name = ($tmpExercise["name"]);
         return $exercise;
     }
 

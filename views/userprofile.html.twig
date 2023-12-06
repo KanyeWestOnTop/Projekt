@@ -1,0 +1,35 @@
+{% extends "layout.html.twig" %}
+{% block styles %}userprofile{% endblock %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+    <div class="row">
+            <h1>Currently logged in as</h1>
+            <p>{{ user.name }}</p>
+            <p>{{ user.email }}</p>
+            <p>{{ user.password }}</p>
+
+            <h1>Change password</h1>
+            <form action="/user/{{ user.id }}" method="post">
+                <input type="hidden" name="_method" value="PUT">
+                <input type="password" name="password" placeholder="New password">
+                <input type="password" name="password2" placeholder="Repeat new password">
+                <input type="submit" value="Change password">
+            </form>
+
+            <h1>Change name</h1>
+            <form action="/user/{{ user.id }}" method="post">
+                <input type="hidden" name="_method" value="PUT">
+                <input type="text" name="prename" id="prename" placeholder="New Prename">
+                <input type="text" name="lastname" id="lastname" placeholder="New Lastname">
+                <input type="submit" value="Change name">
+
+            </form>
+
+            <h1>Change email</h1>
+            <form action="/user/{{ user.id }}" method="post">
+                <input type="hidden" name="_method" value="PUT">
+                <input type="email" name="email" placeholder="New email">
+                <input type="submit" value="Change email">
+            </form>
+    </div>
+{% endblock %}

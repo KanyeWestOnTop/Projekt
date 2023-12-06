@@ -3,146 +3,106 @@
 namespace App\Model;
 
 use App\Gateway\ProgressGateway;
-use App\Model\exercise;
 
-class Progress
-{
+class Progress {
 
     private int $id = 0;
-    private int $exercise_id = 0;
-    private int $weight = 0;
     private int $reps = 0;
+    private int $weight = 0;
     private string $date = "";
+    private int $exercise_id = 0;
+    private int $user_id = 0;
 
-    public function getId(): int
-    {
+    public function getId(): int {
         return $this->id;
     }
-    public function setId(int $id)
-    {
+    public function setId(int $id) {
         $this->id = $id;
     }
-    public function setExerciseId(int $exercise_id)
-    {
-        $this->exercise_id = $exercise_id;
-    }
-    public function getExerciseId(): int
-    {
+    public function getExerciseId(): int {
         return $this->exercise_id;
     }
-    public function setWeight(int $weight)
-    {
-        $this->weight = $weight;
+    public function setExerciseId(int $exercise_id) {
+        $this->exercise_id = $exercise_id;
     }
-    public function getWeight(): int
-    {
-        return $this->weight;
+    public function getUserId(): int {
+        return $this->user_id;
     }
-    public function setReps(int $reps)
-    {
+    public function setUserId(int $user_id) {
+        $this->user_id = $user_id;
+    }
+    public function setReps(int $reps) {
         $this->reps = $reps;
     }
-    public function getReps(): int
-    {
+    public function getReps(): int {
         return $this->reps;
     }
-    public function getDate(): string
-    {
-        return $this->date;
+    public function setWeight(int $weight) {
+        $this->weight = $weight;
     }
-    public function setDate(string $date)
-    {
+    public function getWeight(): int {
+        return $this->weight;
+    }
+    public function setDate(string $date) {
         $this->date = $date;
     }
+    public function getDate(): string {
+        return $this->date;
+    }
 
-    public function save(): void
-    {
+    public function save(): void {
         $gateway = new ProgressGateway();
-        if ($this->id) {
+        if($this->id){
             $gateway->update($this->id, $this->getAttributesAsAssociativeArray());
         } else {
             $this->id = $gateway->insert($this->getAttributesAsAssociativeArray());
         }
     }
-    public function delete()
-    {
+    public function delete() {
         $gateway = new ProgressGateway();
         $gateway->delete($this->id);
-    }
-
-    public static function all(): array
-    {
+    } 
+    public static function all(): array {
         $gateway = new ProgressGateway();
         $progresses = [];
         $dbProgresses = $gateway->all();
         foreach ($dbProgresses as $dbProgress) {
             $progress = new Progress();
             $progress->id = $dbProgress["id"];
-            $progress->setWeight($dbProgress["weight"]);
             $progress->setReps($dbProgress["reps"]);
+            $progress->setWeight($dbProgress["weight"]);
             $progress->setDate($dbProgress["date"]);
 
             $progresses[] = $progress;
         }
         return $progresses;
     }
-
-    public static function findById(int $id): ?Progress
-    {
+    public static function findById(int $id): ?Progress {
         $gateway = new ProgressGateway();
+
         $tmpProgress = $gateway->findById($id);
+
         $progress = null;
+        
         if ($tmpProgress) {
             $progress = self::create($tmpProgress);
         }
         return $progress;
     }
-    private static function create(array $tmpProgress): Progress
-    {
+    private static function create(array $tmpProgress): Progress {
         $progress = new Progress();
         $progress->id = $tmpProgress["id"];
-        $progress->weight = $tmpProgress["weight"];
-        $progress->reps = $tmpProgress["reps"];
-        $progress->date = $tmpProgress["date"];
-
-        if ($tmpProgress["exercise_id"]) {
-            $progress->exercise_id = $tmpProgress["exercise_id"];
-        }
-
-
+        $progress->reps = ($tmpProgress["reps"]);
+        $progress->weight = ($tmpProgress["weight"]);
+        $progress->date = ($tmpProgress["date"]);
         return $progress;
     }
 
-
-    private function getAttributesAsAssociativeArray(): array
-    {
+    private function getAttributesAsAssociativeArray(): array {
         return [
-            "exercise_id" => $this->exercise_id,
-            "weight" => $this->weight,
             "reps" => $this->reps,
-            "date" => $this->date
+            "weight" => $this->weight,
+            "date" => $this->date,
         ];
-    }
-
-    public static function findByExerciseId(int $exerciseId): array
-    {
-        $gateway = new ProgressGateway();
-        $progresses = [];
-
-        $dbProgresses = $gateway->findByFields([
-            "exercise_id" => $exerciseId
-        ]);
-
-
-        foreach ($dbProgresses as $dbProgress) {
-            $progress = self::create($dbProgress);
-            $progresses[] = $progress;
-        }
-        return $progresses;
-    }
-
-    public function getExercise(): ?Exercise
-    {
-        return Exercise::findById($this->exercise_id);
     }
 }
