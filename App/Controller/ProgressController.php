@@ -8,11 +8,17 @@ use App\Model\User;
 
 class ProgressController extends DefaultController {
 
-    public function index()
-    {
+    public function index() {
+        $progresses = Progress::all();
+        $this->render("progress.html.twig", [
+            "progresses" => $progresses
+        ]);
+    }
+
+    public function show(int $id){
         $users = User::all();
         $exercise = Exercise::all();
-        $progresses = Progress::all();
+        $progresses = Progress::findByExerciseId($id);
         $this->render("progress-history.html.twig", [
             "users" => $users,
             "exercise" => $exercise,
@@ -21,11 +27,16 @@ class ProgressController extends DefaultController {
     }
 
     public function create() {
-        $this->render("progress-form.html.twig");
+        $exercises = Exercise::all();
+        $this->render("progress-form.html.twig", [
+            "exercises" => $exercises
+            
+        ]);
     }
 
     public function store(array $data) {
         $progress = new Progress();
+        $progress->getNowUserId();
         $progress->setWeight($data['weight']);
         $progress->setReps($data['reps']);
         $progress->setDate($data['date']);
@@ -42,6 +53,7 @@ class ProgressController extends DefaultController {
 
     public function update(int $id, array $data) {
         $progress = Progress::findById($id);
+        $progress->getNowUserId();
         $progress->setWeight($data['weight']);
         $progress->setReps($data['reps']);
         $progress->setDate($data['date']);

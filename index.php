@@ -42,8 +42,6 @@ if ($uri == "/logout") {
     }
 }
 
-
-
 if ($authenticated->handle()) {
     if ($uri === "/") {
         $controller = new HomeController();
@@ -80,16 +78,31 @@ if ($authenticated->handle()) {
         }
     }
 
-    if (preg_match("#Progress/\d+$#", $uri)) {
+    if (preg_match("#history/\d+$#", $uri)) {
         $matches = array();
         preg_match("/\d+/", $uri, $matches);
-        $controller = new UserController();
+        $controller = new ProgressController();
         if ($httpMethod === "GET") {
-            $controller->index($matches[0]);
+            $controller->show($matches[0]);
         } else if ($httpMethod === "POST") {
             $controller->store($_POST);
         }
     }
+
+    if (preg_match("#progress/\d+$#", $uri)) {
+        $matches = array();
+        preg_match("/\d+/", $uri, $matches);
+        $controller = new ProgressController();
+        if ($httpMethod === "GET") {
+            $controller->edit($matches[0]);
+        } else if ($httpMethod === "POST" && isset($_POST["_method"]) && $_POST["_method"] === "PUT") {
+            $controller->update($matches[0], $_POST);
+        } else if ($httpMethod === "POST" && isset($_POST["_method"]) && $_POST["_method"] === "DELETE") {
+            $controller->delete($matches[0]);
+        }
+    }
+
+
 
     if (preg_match("#/user/\d+$#", $uri)) {
         $matches = array();
@@ -104,13 +117,21 @@ if ($authenticated->handle()) {
         }
     }
 
+    if ($uri === "/progress") {
+        $controller = new ProgressController();
+        if ($httpMethod === "GET") {
+            $controller->show($id);
+        } else if ($httpMethod === "POST") {
+            $controller->store($_POST);
+        }
+    }
+
     if ($uri === "/progress/create") {
         $controller = new ProgressController();
         $controller->create();
         if ($httpMethod === "POST") {
-            $controller->index();
+            $controller->index($id);
         }
-
     }
 
     if ($uri === "/profile") {

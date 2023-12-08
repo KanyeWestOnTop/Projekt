@@ -50,6 +50,11 @@ class Progress {
         return $this->date;
     }
 
+    public function getNowUserId(): int {
+        $user = $_SESSION["user"];
+        return $user->getUserId();
+    }
+
     public function save(): void {
         $gateway = new ProgressGateway();
         if($this->id){
@@ -89,6 +94,19 @@ class Progress {
         }
         return $progress;
     }
+    public static function findByExerciseId(int $exerciseId): array
+    {
+        $gateway = new ProgressGateway();
+        $progresses = [];
+        $dbProgresses = $gateway->findByFields([
+            "exercise_id" => $exerciseId
+        ]);
+        foreach ($dbProgresses as $dbProgress) {
+            $progress = self::create($dbProgress);
+            $progresses[] = $progress;
+        }
+        return $progresses;
+    }
     private static function create(array $tmpProgress): Progress {
         $progress = new Progress();
         $progress->id = $tmpProgress["id"];
@@ -100,6 +118,7 @@ class Progress {
 
     private function getAttributesAsAssociativeArray(): array {
         return [
+            "id" => $this->id,
             "reps" => $this->reps,
             "weight" => $this->weight,
             "date" => $this->date,
