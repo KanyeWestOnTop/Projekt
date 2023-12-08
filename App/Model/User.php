@@ -79,11 +79,7 @@ class User
         }
     }
 
-    public function setExercise(array $exerciseIds, array $pivotFields = []): void
-    {
-        $gateway = new UserGateway();
-        $gateway->saveRelation($this->id, $exerciseIds, "exercise", "n", "progress", $pivotFields);
-    }
+   
     public function delete()
     {
         $gateway = new UserGateway();
@@ -136,24 +132,7 @@ class User
         return $users;
     }
 
-    public function getExercise()
-    {
-        $gateway = new UserGateway();
-        $progress = [];
-
-        $dbProgresses = $gateway->getRelation($this->id, "exercise", "n", "progress");
-
-        foreach ($dbProgresses as $dbProgress) {
-            $progress = new Progress();
-            $progress->setId($dbProgress["id"]);
-            $progress->setReps($dbProgress["reps"]);
-            $progress->setWeight($dbProgress["weight"]);
-            $progress->setDate($dbProgress["date"]);
-            $progresses[] = $progress;
-        }
-
-        return $progress;
-    }
+    
 
     public static function findById(int $id): ?User
     {

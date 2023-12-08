@@ -10,17 +10,15 @@ class ProgressController extends DefaultController {
 
     public function index() {
         $progresses = Progress::all();
-        $this->render("progress.html.twig", [
+        $this->render("progress-history.html.twig", [
             "progresses" => $progresses
         ]);
     }
 
     public function show(int $id){
-        $users = User::all();
         $exercise = Exercise::all();
         $progresses = Progress::findByExerciseId($id);
         $this->render("progress-history.html.twig", [
-            "users" => $users,
             "exercise" => $exercise,
             "progresses" => $progresses
         ]);
@@ -28,18 +26,24 @@ class ProgressController extends DefaultController {
 
     public function create() {
         $exercises = Exercise::all();
+        $users = User::all();
         $this->render("progress-form.html.twig", [
-            "exercises" => $exercises
-            
+            "exercises" => $exercises,
+            "users" => $users
         ]);
     }
 
     public function store(array $data) {
         $progress = new Progress();
-        $progress->getNowUserId();
         $progress->setWeight($data['weight']);
         $progress->setReps($data['reps']);
         $progress->setDate($data['date']);
+        if (isset($data['exercise_id'])) {
+            $progress->setExerciseId($data['exercise_id']);
+        }
+        if (isset($data['user_id'])) {
+            $progress->setUserId($data['user_id']);
+        }
         $progress->save();
         $this->redirect("/progress");
     }
@@ -53,7 +57,6 @@ class ProgressController extends DefaultController {
 
     public function update(int $id, array $data) {
         $progress = Progress::findById($id);
-        $progress->getNowUserId();
         $progress->setWeight($data['weight']);
         $progress->setReps($data['reps']);
         $progress->setDate($data['date']);

@@ -3,6 +3,9 @@
 namespace App\Model;
 
 use App\Gateway\ProgressGateway;
+use App\Model\Exercise;
+use App\Model\User;
+
 
 class Progress {
 
@@ -50,11 +53,6 @@ class Progress {
         return $this->date;
     }
 
-    public function getNowUserId(): int {
-        $user = $_SESSION["user"];
-        return $user->getUserId();
-    }
-
     public function save(): void {
         $gateway = new ProgressGateway();
         if($this->id){
@@ -94,6 +92,49 @@ class Progress {
         }
         return $progress;
     }
+    public function setExercise(array $exerciseIds, array $pivotFields = []): void
+    {
+        $gateway = new ProgressGateway();
+        $gateway->saveRelation($this->id, $exerciseIds, "exercise", "n", "progress", $pivotFields);
+    }
+    public function getExercise()
+    {
+        $gateway = new ProgressGateway();
+        $exercise = [];
+
+        $dbExercises = $gateway->getRelation($this->id, "exercise", "n", "progress");
+
+        foreach ($dbExercises as $dbExercise) {
+            $exercise = new Exercise();
+            $exercise->setId($dbExercise["id"]);
+            $exercise->setReps($dbExercise["name"]);
+            $exercises[] = $exercise;
+        }
+
+        return $exercise;
+    }
+    public function setUser (array $userIds, array $pivotFields = []): void {
+        $gateway = new ProgressGateway();
+        $gateway->saveRelation($this->id, $userIds, "user", "n", "progress", $pivotFields);
+    }
+
+    public function getUser () {
+        $gateway = new ProgressGateway();
+        $user = [];
+
+        $dbUsers = $gateway->getRelation($this->id, "user", "n", "progress");
+
+        foreach ($dbUsers as $dbUser) {
+            $user = new User();
+            $user->setId($dbUser["id"]);
+            $user->setPrename($dbUser["prename"]);
+            $user->setLastname($dbUser["lastname"]);
+            $user->setEmail($dbUser["email"]);
+            $users[] = $user;
+        }
+
+        return $user;
+    }
     public static function findByExerciseId(int $exerciseId): array
     {
         $gateway = new ProgressGateway();
@@ -113,15 +154,19 @@ class Progress {
         $progress->reps = ($tmpProgress["reps"]);
         $progress->weight = ($tmpProgress["weight"]);
         $progress->date = ($tmpProgress["date"]);
+        $progress->exercise_id = ($tmpProgress["exercise_id"]);
+        $progress->user_id = ($tmpProgress["user_id"]);
         return $progress;
     }
-
+    
     private function getAttributesAsAssociativeArray(): array {
         return [
             "id" => $this->id,
             "reps" => $this->reps,
             "weight" => $this->weight,
             "date" => $this->date,
+            "exercise_id" => $this->exercise_id,
+            "user_id" => $this->user_id
         ];
     }
 }

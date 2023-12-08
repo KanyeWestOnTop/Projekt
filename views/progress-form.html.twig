@@ -26,6 +26,11 @@
                             <input type="radio" name="exercise_id" id="exercise_id" value="{{ exercise.id }}">
                     </div>
             {% endfor %} 
+                {% for user in users %}
+                    <label class="form-check-label">{{ user.name }}</label>
+                        <input type="radio" name="user_id" id="user_id" value="{{ user.id }}">
+
+                {% endfor %}
             {% endif %}
             <button class="btn btn-primary">Submit</button>
         </form>

@@ -78,7 +78,7 @@ if ($authenticated->handle()) {
         }
     }
 
-    if (preg_match("#history/\d+$#", $uri)) {
+    if (preg_match("#progress/\d+$#", $uri)) {
         $matches = array();
         preg_match("/\d+/", $uri, $matches);
         $controller = new ProgressController();
@@ -89,25 +89,18 @@ if ($authenticated->handle()) {
         }
     }
 
-    if (preg_match("#progress/\d+$#", $uri)) {
-        $matches = array();
-        preg_match("/\d+/", $uri, $matches);
+    if ($uri === "/progress/create") {
         $controller = new ProgressController();
-        if ($httpMethod === "GET") {
-            $controller->edit($matches[0]);
-        } else if ($httpMethod === "POST" && isset($_POST["_method"]) && $_POST["_method"] === "PUT") {
-            $controller->update($matches[0], $_POST);
-        } else if ($httpMethod === "POST" && isset($_POST["_method"]) && $_POST["_method"] === "DELETE") {
-            $controller->delete($matches[0]);
+        $controller->create();
+        if ($httpMethod === "POST") {
+            $controller->index();
         }
     }
 
-
-
-    if (preg_match("#/user/\d+$#", $uri)) {
+    if (preg_match("#progress/edit/\d+$#", $uri)) {
         $matches = array();
         preg_match("/\d+/", $uri, $matches);
-        $controller = new UserController();
+        $controller = new ProgressController();
         if ($httpMethod === "GET") {
             $controller->edit($matches[0]);
         } else if ($httpMethod === "POST" && isset($_POST["_method"]) && $_POST["_method"] === "PUT") {
@@ -120,17 +113,22 @@ if ($authenticated->handle()) {
     if ($uri === "/progress") {
         $controller = new ProgressController();
         if ($httpMethod === "GET") {
-            $controller->show($id);
+            $controller->index();
         } else if ($httpMethod === "POST") {
             $controller->store($_POST);
         }
     }
 
-    if ($uri === "/progress/create") {
-        $controller = new ProgressController();
-        $controller->create();
-        if ($httpMethod === "POST") {
-            $controller->index($id);
+    if (preg_match("#/user/\d+$#", $uri)) {
+        $matches = array();
+        preg_match("/\d+/", $uri, $matches);
+        $controller = new UserController();
+        if ($httpMethod === "GET") {
+            $controller->edit($matches[0]);
+        } else if ($httpMethod === "POST" && isset($_POST["_method"]) && $_POST["_method"] === "PUT") {
+            $controller->update($matches[0], $_POST);
+        } else if ($httpMethod === "POST" && isset($_POST["_method"]) && $_POST["_method"] === "DELETE") {
+            $controller->delete($matches[0]);
         }
     }
 
