@@ -15,6 +15,7 @@ class LoginController extends DefaultController {
 
        if ($user) {
             $_SESSION['user'] = $user;
+            $_SESSION['user'] = $user->getId();
        } else {
            return $this->render("login.html.twig", [
                "error" => "du wirst sexuell missbraucht"

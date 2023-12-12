@@ -6,7 +6,6 @@
             <h1>Currently logged in as</h1>
             <p>{{ user.name }}</p>
             <p>{{ user.email }}</p>
-            <p>{{ user.password }}</p>
 
             <h1>Change password</h1>
             <form action="/user/{{ user.id }}" method="post">

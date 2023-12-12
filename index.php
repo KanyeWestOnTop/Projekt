@@ -78,12 +78,12 @@ if ($authenticated->handle()) {
         }
     }
 
-    if (preg_match("#progress/\d+$#", $uri)) {
+    if (preg_match("#progresses/\d+$#", $uri)) {
         $matches = array();
         preg_match("/\d+/", $uri, $matches);
         $controller = new ProgressController();
         if ($httpMethod === "GET") {
-            $controller->show($matches[0]);
+            $controller->show($matches[0], $_POST);
         } else if ($httpMethod === "POST") {
             $controller->store($_POST);
         }
@@ -97,7 +97,17 @@ if ($authenticated->handle()) {
         }
     }
 
-    if (preg_match("#progress/edit/\d+$#", $uri)) {
+    if (preg_match("#/progress/create/\d+$#", $uri)){
+        $matches = array();
+        preg_match("/\d+/", $uri, $matches);
+        $controller = new ProgressController();
+        $controller->createthis($matches[0]);
+        if ($httpMethod === "POST") {
+            $controller->index();
+        }
+    }
+
+    if (preg_match("#progress/\d+$#", $uri)) {
         $matches = array();
         preg_match("/\d+/", $uri, $matches);
         $controller = new ProgressController();

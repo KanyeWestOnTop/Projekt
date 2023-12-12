@@ -8,15 +8,16 @@
             <tr>
                 <th>Exercise</th>
                 <th>Progress</th>
+                <th>Delete</th>
             </tr>
             {% for exercise in exercises %}
             <tr>
                 <td><div class="exec">{{ exercise.name }}</div></td> 
-                <td><a href="/progress/{{ exercise.id }}" class="btn btn-danger moove">-> Progress</a></td>
-                <form method="POST" action="/exercises/{{ exercise.id }}">
+                <td><a href="/progresses/{{ exercise.id }}" class="btn btn-success moove">-> Progress</a></td>
+                <td><form method="POST" action="/exercises/{{ exercise.id }}">
                     <input type="hidden" id="_method" name="_method" value="DELETE" />
-                    <button class="btn btn-danger">Löschen</button>
-                </form>
+                    <button class="btn btn-danger moove">Löschen</button>
+                </form></td>
             </tr>
             {% endfor %} 
         </table>

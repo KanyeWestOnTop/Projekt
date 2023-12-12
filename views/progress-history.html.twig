@@ -6,7 +6,7 @@
             <h1>Ur Progress {{ exercise.name }}</h1>
             {% for progress in progresses %}
                 <p>Exercise {{ exercise.name }}: ur weight was {{ progress.weight }} KG - {{ progress.reps }} REPS - {{ progress.date }} 
-                </p> <a class="btn btn-success" href="progress/edit/{{ progress.id }}">Edit</a>
+                </p> <a class="btn btn-success" href="progress/{{ progress.id }}">Edit</a>
                 <form method="POST" action="/progress/{{ progress.id }}">
                     <input type="hidden" id="_method" name="_method" value="DELETE" />
                     <button class="btn btn-danger">Löschen</button>
@@ -16,7 +16,7 @@
             </div> 
        
         <hr>    
-        <a href="/progress/create" class="btn btn-primary">New</a>
+        <a href="/progress/create/{{ exercise.id }}" class="btn btn-primary">New</a>
         <a href="/" class="btn btn-success home">Home</a>
     </div>
 {% endblock %}

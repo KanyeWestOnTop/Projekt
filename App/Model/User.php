@@ -79,7 +79,7 @@ class User
         }
     }
 
-   
+
     public function delete()
     {
         $gateway = new UserGateway();
@@ -90,6 +90,7 @@ class User
     {
         $gateway = new UserGateway();
         $hash = password_hash($password, PASSWORD_BCRYPT);
+
         $tmpUser = $gateway->findByFields([
             "email" => $email
         ]);
@@ -132,7 +133,7 @@ class User
         return $users;
     }
 
-    
+
 
     public static function findById(int $id): ?User
     {

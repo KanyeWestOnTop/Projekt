@@ -3,8 +3,7 @@
 namespace App\Controller;
 
 use App\Model\User;
-use App\Model\Exercise;
-use App\Model\Progress;
+
 
 class UserController extends DefaultController
 {
@@ -25,13 +24,12 @@ class UserController extends DefaultController
         $user->setEmail($data['email']);
         $user->setPassword($data['password']);
         $user->save();
-
         $this->redirect("/login");
     }
 
     public function info()
     {
-        $user = $_SESSION['user'];
+        $user = User::findById($_SESSION['user']);
         $this->render("userprofile.html.twig", [
             "user" => $user
         ]);
@@ -40,19 +38,9 @@ class UserController extends DefaultController
     public function edit(int $id)
     {
         $user = User::findById($id);
-        $exercise = Exercise::all();
-        $userExercise = $user->getExercise();
-
-        $diffArray = array_udiff($exercise, $userExercise, function (Exercise $a1, Exercise $a2) {
-            if ($a1->getId() === $a2->getId()) {
-                return 0;
-            }
-            return -1;
-        });
 
         $this->render("register.html.twig", [
-            "user" => $user,
-            "exercise" => $exercise,
+            "user" => $user
         ]);
     }
 
