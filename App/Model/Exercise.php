@@ -53,6 +53,7 @@ class Exercise
         }
         return $exercises;
     }
+    
     public static function findById(int $id): ?Exercise
     {
         $gateway = new ExerciseGateway();

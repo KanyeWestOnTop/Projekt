@@ -38,6 +38,7 @@ class ProgressController extends DefaultController
     public function createthis(int $id)
     {
         $exercise = Exercise::findById($id);
+        $_SESSION['exercise'] = $exercise->getId();
         $this->render("progress-form.html.twig", [
             "exercise" => $exercise
         ]);
@@ -51,14 +52,17 @@ class ProgressController extends DefaultController
         $progress->setDate($data['date']);
         if (isset($data['exercise_id'])) {
             $progress->setExerciseId($data['exercise_id']);
+        } else {
+            $exercise = $_SESSION['exercise'];
+            $progress->setExerciseId($exercise);
         }
         if (isset($_SESSION['user'])) {
             $user = User::findById($_SESSION['user']);
             $progress->setUserId($user->getId());
-        }
+        } 
+        $exercise_id = $progress->getExerciseId();
         $progress->save();
-        $exerciseId = $progress->getExerciseId();
-        $this->redirect("/progresses/$exerciseId");
+        $this->redirect("/progresses/$exercise_id");
     }
 
     public function edit(int $id)
@@ -78,7 +82,8 @@ class ProgressController extends DefaultController
         $progress->setReps($data['reps']);
         $progress->setDate($data['date']);
         $progress->save();
-        $this->redirect("/progress");
+        $exercise_id = $progress->getExerciseId();
+        $this->redirect("/progresses/$exercise_id");
     }
 
     public function delete(int $id): void

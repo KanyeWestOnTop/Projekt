@@ -27,7 +27,6 @@ class ExerciseController extends DefaultController
     }
     public function update(int $id, array $data)
     {
-
         $exercise = Exercise::findById($id);
         $exercise->setName($data['name']);
         $exercise->save();
