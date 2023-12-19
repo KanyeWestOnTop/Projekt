@@ -4,7 +4,6 @@ namespace App\Model;
 
 use App\Gateway\ProgressGateway;
 use App\Model\Exercise;
-use App\Model\User;
 
 
 class Progress

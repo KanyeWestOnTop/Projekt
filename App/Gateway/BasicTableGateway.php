@@ -41,8 +41,6 @@ abstract class BasicTableGateway {
     }
    
     public function update(int $id, array $data): void {
-        //UPDATE book SET title = 'x', author = 'y' WHERE id = 1
-        //UPDATE $this->table SET title = ?, author = ? WHERE $this->primary = $id
         $values = [];
         $columns = "";
 
@@ -98,7 +96,7 @@ abstract class BasicTableGateway {
 
     public function getRelation(int $objId, string $relationTable, string $type = null, string $intermediateTable = null): array {
         if ($type == "n") {
-            // SELECT * FROM actor AS p LEFT JOIN AS i ON p.id = i.actor_id WHERE i.movie_id = $id
+            
             $sql = "SELECT * FROM $relationTable AS p LEFT JOIN $intermediateTable AS i on p.id = i.{$relationTable}_id WHERE i.{$this->table}_id = $objId";
             $stmt = $this->connection->prepare($sql);
 
