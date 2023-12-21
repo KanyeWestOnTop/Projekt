@@ -4,9 +4,15 @@
 {% block content %}
     <div class="row">
         <h1>Create New Exercise</h1>
-        <form method="POST" action="/exercises">
+        <form method="POST" action="{% if exercise or _method == "PUT" %}/exercises/{{ exercise.id ?? id }}{% else %}/exercises{% endif %}">
+            {% if exercise or _method == "PUT" %}
+                <input type="hidden" id="_method" name="_method" value="PUT"/>
+            {% endif %}
             <label for="name">Exercise: </label>
-            <input type="text" name="name" id="name">
+            <input type="text" name="name" id="name" value="{{ name ?? exercise.name }}">
+             {% if errors["name"] %}        
+                <span class="fw-bold text-danger">{{ errors["name"] | raw }}</span>
+            {% endif %}
             <button class="btn btn-primary">Submit</button>
         </form>
         <a href="/" class="btn btn-success home">Home</a>

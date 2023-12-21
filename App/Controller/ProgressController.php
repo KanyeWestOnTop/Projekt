@@ -46,6 +46,15 @@ class ProgressController extends DefaultController
 
     public function store(array $data)
     {
+        $rules = [
+            "weight" => "required|numeric",
+            "reps" => "required|numeric",
+            "date" => "required|date",
+            "exercise_id" => "required"
+        ];
+
+        $this->validate($data, $rules);
+
         $progress = new Progress();
         $progress->setWeight($data['weight']);
         $progress->setReps($data['reps']);
@@ -57,8 +66,8 @@ class ProgressController extends DefaultController
             $progress->setExerciseId($exercise);
         }
         if (isset($_SESSION['user'])) {
-            $user = User::findById($_SESSION['user']);
-            $progress->setUserId($user->getId());
+            $userId = $_SESSION['user']->getId();
+            $progress->setUserId($userId);
         } 
         $exercise_id = $progress->getExerciseId();
         $progress->save();
@@ -77,6 +86,14 @@ class ProgressController extends DefaultController
 
     public function update(int $id, array $data)
     {
+        $rules = [
+            "weight" => "required|numeric",
+            "reps" => "required|numeric",
+            "date" => "required|date"
+        ];
+
+        $this->validate($data, $rules);
+
         $progress = Progress::findById($id);
         $progress->setWeight($data['weight']);
         $progress->setReps($data['reps']);

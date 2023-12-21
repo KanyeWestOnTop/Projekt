@@ -43,6 +43,7 @@ if ($uri == "/logout") {
 }
 
 if ($authenticated->handle()) {
+
     if ($uri === "/") {
         $controller = new HomeController();
         $controller->index();
@@ -129,21 +130,17 @@ if ($authenticated->handle()) {
         }
     }
 
-    if (preg_match("#/user/\d+$#", $uri)) {
-        $matches = array();
-        preg_match("/\d+/", $uri, $matches);
+    if ($uri === "/user/changepassword") {
         $controller = new UserController();
         if ($httpMethod === "GET") {
-            $controller->edit($matches[0]);
-        } else if ($httpMethod === "POST" && isset($_POST["_method"]) && $_POST["_method"] === "PUT") {
-            $controller->update($matches[0], $_POST);
-        } else if ($httpMethod === "POST" && isset($_POST["_method"]) && $_POST["_method"] === "DELETE") {
-            $controller->delete($matches[0]);
+            $controller->changepassword();
+        } else if ($httpMethod === "POST") {
+            $controller->updatepassword($_POST);
         }
     }
 
     if ($uri === "/profile") {
         $controller = new UserController();
-        $controller->info();
+        $controller->info($_SESSION['userId']);
     }
 }

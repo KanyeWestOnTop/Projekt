@@ -16,6 +16,12 @@ class ExerciseController extends DefaultController
     }
     public function store(array $data)
     {
+        $rules = [
+            "name" => "required|alpha",
+        ];
+
+        $this->validate($data, $rules);
+
         $exercise = new Exercise();
         $exercise->setName($data['name']);
         $exercise->save();
@@ -27,6 +33,11 @@ class ExerciseController extends DefaultController
     }
     public function update(int $id, array $data)
     {
+        $rules = [
+            "name" => "required|alpha",
+        ];
+
+        $this->validate($data, $rules);
         $exercise = Exercise::findById($id);
         $exercise->setName($data['name']);
         $exercise->save();
@@ -35,10 +46,10 @@ class ExerciseController extends DefaultController
     }
     public function edit(int $id)
     {
-        $exercises = Exercise::findById($id);
+        $exercise = Exercise::findById($id);
 
         $this->render("exercises-form.html.twig", [
-            "exercises" => $exercises
+            "exercise" => $exercise
         ]);
     }
     public function delete(int $id): void

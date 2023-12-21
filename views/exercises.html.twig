@@ -9,6 +9,7 @@
                 <th>Exercise</th>
                 <th>Progress</th>
                 <th>Delete</th>
+                <th>Edit</th>
             </tr>
             {% for exercise in exercises %}
             <tr>
@@ -18,6 +19,7 @@
                     <input type="hidden" id="_method" name="_method" value="DELETE" />
                     <button class="btn btn-danger moove">Löschen</button>
                 </form></td>
+                <td><a href="/exercises/{{ exercise.id }}" class="btn btn-warning moove">Edit</a></td>
             </tr>
             {% endfor %} 
         </table>

@@ -17,45 +17,46 @@ class UserController extends DefaultController
     }
 
     public function store(array $data)
-    {
-        $user = new User();
-        $user->setPrename($data['prename']);
-        $user->setLastname($data['lastname']);
-        $user->setEmail($data['email']);
-        $user->setPassword($data['password']);
-        $user->save();
-        $this->redirect("/login");
-    }
+{
+    $rules = [
+        "prename" => "required",
+        "lastname" => "required",
+        "email" => "required|email",
+        "password" => "required|min:8"
+    ];
 
-    public function info()
-    {
-        $user = User::findById($_SESSION['user']);
-        $this->render("userprofile.html.twig", [
-            "user" => $user
-        ]);
-    }
+    $this->validate($data, $rules);
 
-    public function edit(int $id)
-    {
-        $user = User::findById($id);
+    $user = new User();
+    $user->setPrename($data['prename']);
+    $user->setLastname($data['lastname']);
+    $user->setEmail($data['email']);
+    $user->setPassword($data['password']);
+    $user->save();
 
-        $this->render("register.html.twig", [
-            "user" => $user
-        ]);
-    }
+    $this->redirect("/login");
+}
 
-    public function update(int $id, array $data)
-    {
-        $user = User::findById($id);
+public function changepassword ()
+{
+    $this->render("changepassword.html.twig");
+}
 
-        $user->setPrename($data['prename']);
-        $user->setLastname($data['lastname']);
-        $user->setEmail($data['email']);
-        $user->setPassword($data['password']);
-        $user->save();
+public function updatepassword (array $data)
+{
+    $rules = [
+        "password" => "required|min:8"
+    ];
 
-        $this->redirect("/");
-    }
+    $this->validate($data, $rules);
+
+    $user = new User();
+    $user->setPassword($data['password']);
+    $user->save();
+
+    $this->redirect("/profile");
+}
+    
 
     public function delete(int $id): void
     {
@@ -68,4 +69,14 @@ class UserController extends DefaultController
     {
         $this->render("register.html.twig");
     }
+
+    public function info($userId)
+    {
+        $userId = User::findById($_SESSION['userId']);
+        $this->render("userprofile.html.twig", 
+        [
+            "user" => $userId
+        ]);
+    }
+    
 }

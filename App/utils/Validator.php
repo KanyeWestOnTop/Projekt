@@ -8,8 +8,8 @@ class Validator {
         $response = [];
 
         foreach ($validationRules as $field => $rules) {
-            foreach (explode("|", $rules) as $rule ) {
-                if ($rule === "required" && ( !array_key_exists($field, $values) || empty(trim($values[$field])) ) ) {
+            foreach (explode("|", $rules) as $rule) {
+                if ($rule === "required" && (!array_key_exists($field, $values) || empty(trim($values[$field])))) {
                     $this->checkArrayKey($response, $field);    
                     $response[$field] .= "The $field field is required.";
                 }
@@ -17,9 +17,25 @@ class Validator {
                     $this->checkArrayKey($response, $field);
                     $response[$field] .= "The $field field must be alphanumeric character.";
                 }
-                if ($rule === "numeric" && preg_match("/^0|[1-9]\d*$/", $values[$field])) {
+                //numeric
+                if ($rule === "numeric" && !is_numeric($values[$field])) {
                     $this->checkArrayKey($response, $field);
-                    $response[$field] .= "The $field field must be numeric";
+                    $response[$field] .= "The $field field must be numeric.";
+                }
+                //date
+                if ($rule === "date" && !preg_match("/^\d{4}-\d{2}-\d{2}$/", $values[$field])) {
+                    $this->checkArrayKey($response, $field);
+                    $response[$field] .= "The $field field must be a date.";
+                }
+                // alpha
+                if ($rule === "alpha" && !preg_match("/^[a-z .\+]+$/i", $values[$field])) {
+                    $this->checkArrayKey($response, $field);
+                    $response[$field] .= "The $field field must be alphabetic character.";
+                }
+                // email
+                if ($rule === "email" && !filter_var($values[$field], FILTER_VALIDATE_EMAIL)) {
+                    $this->checkArrayKey($response, $field);
+                    $response[$field] .= "The $field field must be a valid email address.";
                 }
             }
         }

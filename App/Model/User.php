@@ -3,7 +3,6 @@
 namespace App\Model;
 
 use App\Gateway\UserGateway;
-use App\Model\Progress;
 
 class User
 {
@@ -116,7 +115,7 @@ class User
     public static function all(): array
     {
         $gateway = new UserGateway();
-        $user = [];
+        $users = [];
 
         $dbUsers = $gateway->all();
 

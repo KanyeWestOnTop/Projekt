@@ -2,16 +2,20 @@
 {% block styles %}login{% endblock %}
 {% block title %}LoginPage{% endblock %}
 {% block content %}
-    <h1>Login</h1>
     <div class="row">
+        <h1>Login</h1>
         <form method="POST" action="/login">
             <div class="form-group">
                 <label for="email">Email address</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+                <input type="email" class="form-control" id="email" name="email">
+            </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                <input type="password" class="form-control" id="password" name="password">
             </div>
+            {% if error %}
+                <span class="fn-bold text-danger">{{ error }}</span>
+            {% endif %}
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
         <br>
