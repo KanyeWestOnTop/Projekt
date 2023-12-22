@@ -79,6 +79,15 @@ if ($authenticated->handle()) {
         }
     }
 
+    if ($uri === "/progress") {
+        $controller = new ProgressController();
+        if ($httpMethod === "GET") {
+            $controller->index();
+        } else if ($httpMethod === "POST") {
+            $controller->store($_POST);
+        }
+    }
+
     if (preg_match("#progresses/\d+$#", $uri)) {
         $matches = array();
         preg_match("/\d+/", $uri, $matches);
@@ -98,16 +107,6 @@ if ($authenticated->handle()) {
         }
     }
 
-    if (preg_match("#/progress/create/\d+$#", $uri)){
-        $matches = array();
-        preg_match("/\d+/", $uri, $matches);
-        $controller = new ProgressController();
-        $controller->createthis($matches[0]);
-        if ($httpMethod === "POST") {
-            $controller->index();
-        }
-    }
-
     if (preg_match("#progress/\d+$#", $uri)) {
         $matches = array();
         preg_match("/\d+/", $uri, $matches);
@@ -121,13 +120,19 @@ if ($authenticated->handle()) {
         }
     }
 
-    if ($uri === "/progress") {
+    if (preg_match("#/progress/create/\d+$#", $uri)) {
+        $matches = array();
+        preg_match("/\d+/", $uri, $matches);
         $controller = new ProgressController();
-        if ($httpMethod === "GET") {
+        $controller->createthis($matches[0]);
+        if ($httpMethod === "POST") {
             $controller->index();
-        } else if ($httpMethod === "POST") {
-            $controller->store($_POST);
         }
+    }
+
+    if ($uri === "/profile") {
+        $controller = new UserController();
+        $controller->info();
     }
 
     if ($uri === "/user/changepassword") {
@@ -137,10 +142,5 @@ if ($authenticated->handle()) {
         } else if ($httpMethod === "POST") {
             $controller->updatepassword($_POST);
         }
-    }
-
-    if ($uri === "/profile") {
-        $controller = new UserController();
-        $controller->info($_SESSION['userId']);
     }
 }

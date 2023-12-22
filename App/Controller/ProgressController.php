@@ -24,11 +24,11 @@ class ProgressController extends DefaultController
         $this->render("progress-history.html.twig", [
             "exercise" => $exercise,
             "progresses" => $progresses
-        ]);
+                ]);
     }
 
     public function create()
-    {
+    {        
         $exercises = Exercise::all();
         $this->render("progress-form.html.twig", [
             "exercises" => $exercises
@@ -63,7 +63,8 @@ class ProgressController extends DefaultController
             $progress->setExerciseId($data['exercise_id']);
         } else {
             $exercise = $_SESSION['exercise'];
-            $progress->setExerciseId($exercise);
+            $exerciseId = $exercise->getId();
+            $progress->setExerciseId($exerciseId);
         }
         if (isset($_SESSION['user'])) {
             $userId = $_SESSION['user']->getId();

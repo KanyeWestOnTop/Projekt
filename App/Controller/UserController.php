@@ -70,12 +70,12 @@ public function updatepassword (array $data)
         $this->render("register.html.twig");
     }
 
-    public function info($userId)
+    public function info()
     {
-        $userId = User::findById($_SESSION['userId']);
+        $user = User::findById($_SESSION['userId']);
         $this->render("userprofile.html.twig", 
         [
-            "user" => $userId
+            "user" => $user
         ]);
     }
     

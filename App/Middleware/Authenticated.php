@@ -8,8 +8,14 @@ class Authenticated
     {
         $user = $_SESSION['user'];
         if (!$user) {
-            header("Location: /login");
-            return exit();
+            if ($_SERVER["REQUEST_URI"] == "/login") {
+                header("Location: /login");
+                return exit();
+            } else {
+                header("Location: /register");
+                return exit();
+            }
+            
         }
         return true;
     }

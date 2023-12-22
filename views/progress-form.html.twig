@@ -46,13 +46,15 @@
 						<div class="form-check">
 							<label class="form-check-label">{{ exercise.name }}</label>
 							<input type="radio" name="exercise_id" id="exercise_id" value="{{ exercise.id }}" >
-							{% if errors["exercise_id"] %}        
-								<span class="fw-bold text-danger">{{ errors["exercise_id"] | raw }}</span>
-							{% endif %}
+							
 						</div>
 					{% endfor %}
+					{% if errors["exercise_id"] %}        
+								<span class="fw-bold text-danger">Plase select an Exercise</span>
+							{% endif %}
 			{% endif %}
 		{% else %}
+		<input type="hidden" name="exercise_id" value="{{ exercise.id ?? id }}">
 		<label for="weight">Weight:
 			</label>
 			<input type="text" name="weight" id="weight" value="{{ weight ?? progress.weight }}">
