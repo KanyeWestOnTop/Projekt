@@ -4,7 +4,7 @@ namespace App\Gateway;
 use PDO;
 use PDOStatement;
 
-abstract class BasicTableGateway { // Basis Klass für Operationen
+abstract class BasicTableGateway { 
 
     private PDO $connection;
     protected string $table;
