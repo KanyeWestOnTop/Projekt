@@ -17,46 +17,47 @@ class UserController extends DefaultController
     }
 
     public function store(array $data)
-{
-    $rules = [
-        "prename" => "required",
-        "lastname" => "required",
-        "email" => "required|email",
-        "password" => "required|min:8"
-    ];
+    {
+        $rules = [
+            "prename" => "required",
+            "lastname" => "required",
+            "email" => "required|email",
+            "password" => "required|min:8"
+        ];
 
-    $this->validate($data, $rules);
+        $this->validate($data, $rules);
 
-    $user = new User();
-    $user->setPrename($data['prename']);
-    $user->setLastname($data['lastname']);
-    $user->setEmail($data['email']);
-    $user->setPassword($data['password']);
-    $user->save();
+        $user = new User();
+        $user->setPrename($data['prename']);
+        $user->setLastname($data['lastname']);
+        $user->setEmail($data['email']);
+        $user->setPassword($data['password']);
+        $user->save();
+        $this->redirect("/login");
+    }
 
-    $this->redirect("/login");
-}
 
-public function changepassword ()
-{
-    $this->render("changepassword.html.twig");
-}
 
-public function updatepassword (array $data)
-{
-    $rules = [
-        "password" => "required|min:8"
-    ];
+    public function changepassword()
+    {
+        $this->render("changepassword.html.twig");
+    }
 
-    $this->validate($data, $rules);
+    public function updatepassword(array $data)
+    {
+        $rules = [
+            "password" => "required|min:8"
+        ];
 
-    $user = new User();
-    $user->setPassword($data['password']);
-    $user->save();
+        $this->validate($data, $rules);
 
-    $this->redirect("/profile");
-}
-    
+        $user = User::findById($_SESSION['user']->getId());
+        $user->setPassword($data['password']);
+        $user->save();
+
+        $this->redirect("/profile");
+    }
+
 
     public function delete(int $id): void
     {
@@ -72,11 +73,12 @@ public function updatepassword (array $data)
 
     public function info()
     {
-        $user = User::findById($_SESSION['userId']);
-        $this->render("userprofile.html.twig", 
-        [
-            "user" => $user
-        ]);
+        $user = User::findById($_SESSION['user']->getId());
+        $this->render(
+            "userprofile.html.twig",
+            [
+                "user" => $user
+            ]
+        );
     }
-    
 }

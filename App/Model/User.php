@@ -79,35 +79,15 @@ class User
     }
 
 
-    public function delete()
+    private static function create(array $tmpUser): User
     {
-        $gateway = new UserGateway();
-        $gateway->delete($this->id);
-    }
+        $user = new User();
+        $user->id = $tmpUser["id"];
+        $user->email = $tmpUser["email"];
+        $user->password = $tmpUser["password"];
+        $user->lastname = $tmpUser["lastname"];
+        $user->prename = $tmpUser["prename"];
 
-    public static function findByEmailAndPassword(string $email, string $password): ?User
-    {
-        $gateway = new UserGateway();
-        $hash = password_hash($password, PASSWORD_BCRYPT);
-
-        $tmpUser = $gateway->findByFields([
-            "email" => $email
-        ]);
-
-        $user = null;
-
-        if (count($tmpUser) === 1) {
-            $userArray = $tmpUser[0];
-
-
-            if (password_verify($password, $userArray["password"])) {
-                $user = new User();
-                $user->id = $userArray["id"];
-                $user->prename = $userArray["prename"];
-                $user->lastname = $userArray["lastname"];
-                $user->email = $userArray["email"];
-            }
-        }
         return $user;
     }
 
@@ -132,7 +112,35 @@ class User
         return $users;
     }
 
+    public function delete()
+    {
+        $gateway = new UserGateway();
+        $gateway->delete($this->id);
+    }
 
+    public static function findByEmailAndPassword(string $email, string $password): ?User
+    {
+        $gateway = new UserGateway();
+
+        $tmpUser = $gateway->findByFields([
+            "email" => $email
+        ]);
+
+        $user = null;
+
+        if (count($tmpUser) === 1) {
+            $userArray = $tmpUser[0];
+
+            if (password_verify($password, $userArray["password"])) {
+                $user = new User();
+                $user->id = $userArray["id"];
+                $user->prename = $userArray["prename"];
+                $user->lastname = $userArray["lastname"];
+                $user->email = $userArray["email"];
+            }
+        }
+        return $user;
+    }
 
     public static function findById(int $id): ?User
     {
@@ -143,18 +151,6 @@ class User
         if ($tmpUser) {
             $user = self::create($tmpUser);
         }
-
-        return $user;
-    }
-
-    private static function create(array $tmpUser): User
-    {
-        $user = new User();
-        $user->id = $tmpUser["id"];
-        $user->email = $tmpUser["email"];
-        $user->password = $tmpUser["password"];
-        $user->lastname = $tmpUser["lastname"];
-        $user->prename = $tmpUser["prename"];
 
         return $user;
     }

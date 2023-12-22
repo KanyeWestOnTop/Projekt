@@ -1,22 +1,31 @@
 {% extends "layout.html.twig" %}
-{% block title %}Progress{% endblock %}
+{% block title %}Progress
+{% endblock %}
 {% block content %}
-    <div class="row">
-        <div class="x">
-            <h1>Ur Progress {{ exercise.name }}</h1>
-            {% for progress in progresses %}
-                <p>Exercise {{ exercise.name }}: ur weight was {{ progress.weight }} KG - {{ progress.reps }} REPS - {{ progress.date }} 
-                </p> <a class="btn btn-success" href="progress/{{ progress.id }}">Edit</a>
-                <form method="POST" action="/progress/{{ progress.id }}">
-                    <input type="hidden" id="_method" name="_method" value="DELETE" />
-                    <button class="btn btn-danger">Löschen</button>
-                </form> 
-                <br>
-            {% endfor %}
-            </div> 
-       
-        <hr>    
-        <a href="/progress/create/{{ exercise.id }}" class="btn btn-primary">New</a>
-        <a href="/" class="btn btn-success home">Home</a>
-    </div>
+	<div class="row">
+		<div class="x">
+			<h1>Ur Progress
+				{{ exercise.name }}</h1>
+			{% for progress in progresses %}
+				<p>Exercise
+					{{ exercise.name }}: ur weight was
+					{{ progress.weight }}
+					KG -
+					{{ progress.reps }}
+					REPS -
+					{{ progress.date }}
+				</p>
+				<a class="btn btn-success" href="progress/{{ progress.id }}">Edit</a>
+				<form method="POST" action="/progress/{{ progress.id }}">
+					<input type="hidden" id="_method" name="_method" value="DELETE"/>
+					<button class="btn btn-danger">Löschen</button>
+				</form>
+				<br>
+			{% endfor %}
+		</div>
+
+		<hr>
+		<a href="/progress/create/{{ exercise.id }}" class="btn btn-primary">New</a>
+		<a href="/" class="btn btn-success home">Home</a>
+	</div>
 {% endblock %}

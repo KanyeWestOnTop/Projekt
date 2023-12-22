@@ -15,16 +15,6 @@ $uri = $_SERVER["REQUEST_URI"];
 $httpMethod = $_SERVER["REQUEST_METHOD"];
 $authenticated = new Authenticated();
 
-if ($uri == "/login") {
-    $controller = new LoginController();
-    if ($httpMethod == "GET") {
-        $controller->index();
-        die();
-    } else {
-        $controller->login($_POST);
-    }
-}
-
 if ($uri == "/register") {
     $controller = new UserController();
     if ($httpMethod == "GET") {
@@ -34,6 +24,18 @@ if ($uri == "/register") {
         $controller->store($_POST);
     }
 }
+
+if ($uri == "/login") {
+    $controller = new LoginController();
+    if ($httpMethod == "GET") {
+        $controller->index();
+        die();
+    } else {
+        $controller->login($_POST);
+    }
+    die();
+}
+
 
 if ($uri == "/logout") {
     $controller = new LoginController();

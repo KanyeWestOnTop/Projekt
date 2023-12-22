@@ -4,76 +4,76 @@
 {% block title %}Progress Form
 {% endblock %}
 {% block content %}
-    
+
 	<div class="row">
 		{% if progress %}
 			<h1>
 				Edit Progress for
 				{{ exercise.name }}
-				</h1>
+			</h1>
 		{% else %}
 			<h1>
-				New Progress 
+				New Progress
 				{{ exercise.name }}
 			</h1>
 		{% endif %}
-		<form method="POST" action="{% if progress or _method == "PUT" %}/progress/{{  progress.id ?? id }}{% else %}/progress{% endif %}">
+		<form method="POST" action="{% if progress or _method == "PUT" %}/progress/{{ progress.id ?? id }}{% else %}/progress{% endif %}">
 			{% if progress or _method == "PUT" %}
 				<input type="hidden" id="_method" name="_method" value="PUT"/>
 			{% endif %}
-		{% if exercises|length > 0 %}
-			<label for="weight">Weight:
-			</label>
-			<input type="text" name="weight" id="weight" value="{{ weight ?? progress.weight }}">
-			    {% if errors["weight"] %}        
-                <span class="fw-bold text-danger">{{ errors["weight"] | raw }}</span>
-            {% endif %}
-			<label for="reps">Reps:
-			</label>
-			<input type="text" name="reps" id="reps" value="{{ reps ?? progress.reps }}">
-				{% if errors["reps"] %}        
-				<span class="fw-bold text-danger">{{ errors["reps"] | raw }}</span>
-			{% endif %}	
-			<label for="date">Date:
-			</label>
-			<input type="text" name="date" id="date" value="{{ date ?? progress.date }}">
-				{% if errors["date"] %}        
-				<span class="fw-bold text-danger">{{ errors["date"] | raw }}</span>
-			{% endif %}
-			{% if not progress %}
-			<label for="exercise_id">Select Exercise:</label>
+			{% if exercises|length > 0 %}
+				<label for="weight">Weight:
+				</label>
+				<input type="text" name="weight" id="weight" value="{{ weight ?? progress.weight }}">
+				{% if errors["weight"] %}
+					<span class="fw-bold text-danger">{{ errors["weight"] | raw }}</span>
+				{% endif %}
+				<label for="reps">Reps:
+				</label>
+				<input type="text" name="reps" id="reps" value="{{ reps ?? progress.reps }}">
+				{% if errors["reps"] %}
+					<span class="fw-bold text-danger">{{ errors["reps"] | raw }}</span>
+				{% endif %}
+				<label for="date">Date:
+				</label>
+				<input type="text" name="date" id="date" value="{{ date ?? progress.date }}">
+				{% if errors["date"] %}
+					<span class="fw-bold text-danger">{{ errors["date"] | raw }}</span>
+				{% endif %}
+				{% if not progress %}
+					<label for="exercise_id">Select Exercise:</label>
 					{% for exercise in exercises %}
 						<div class="form-check">
 							<label class="form-check-label">{{ exercise.name }}</label>
-							<input type="radio" name="exercise_id" id="exercise_id" value="{{ exercise.id }}" >
-							
+							<input type="radio" name="exercise_id" id="exercise_id" value="{{ exercise.id }}">
+
 						</div>
 					{% endfor %}
-					{% if errors["exercise_id"] %}        
-								<span class="fw-bold text-danger">Plase select an Exercise</span>
-							{% endif %}
+					{% if errors["exercise_id"] %}
+						<span class="fw-bold text-danger">Plase select an Exercise</span>
+					{% endif %}
+				{% endif %}
+			{% else %}
+				<input type="hidden" name="exercise_id" value="{{ exercise.id ?? id }}">
+				<label for="weight">Weight:
+				</label>
+				<input type="text" name="weight" id="weight" value="{{ weight ?? progress.weight }}">
+				{% if errors["weight"] %}
+					<span class="fw-bold text-danger">{{ errors["weight"] | raw }}</span>
+				{% endif %}
+				<label for="reps">Reps:
+				</label>
+				<input type="text" name="reps" id="reps" value="{{ reps ?? progress.reps }}">
+				{% if errors["reps"] %}
+					<span class="fw-bold text-danger">{{ errors["reps"] | raw }}</span>
+				{% endif %}
+				<label for="date">Date:
+				</label>
+				<input type="text" name="date" id="date" value="{{ date ?? progress.date }}">
+				{% if errors["date"] %}
+					<span class="fw-bold text-danger">{{ errors["date"] | raw }}</span>
+				{% endif %}
 			{% endif %}
-		{% else %}
-		<input type="hidden" name="exercise_id" value="{{ exercise.id ?? id }}">
-		<label for="weight">Weight:
-			</label>
-			<input type="text" name="weight" id="weight" value="{{ weight ?? progress.weight }}">
-			    {% if errors["weight"] %}        
-                <span class="fw-bold text-danger">{{ errors["weight"] | raw }}</span>
-			{% endif %}		
-			<label for="reps">Reps:
-			</label>
-			<input type="text" name="reps" id="reps" value="{{ reps ?? progress.reps }}">
-			    {% if errors["reps"] %}        
-                <span class="fw-bold text-danger">{{ errors["reps"] | raw }}</span>
-			{% endif %}
-			<label for="date">Date:
-			</label>
-			<input type="text" name="date" id="date" value="{{ date ?? progress.date }}">
-			{% if errors["date"] %}        
-				<span class="fw-bold text-danger">{{ errors["date"] | raw }}</span>
-			{% endif %}
-		{% endif %}	
 			<button class="btn btn-primary">Submit</button>
 		</form>
 		<a href="/" class="btn btn-success home">Home</a>

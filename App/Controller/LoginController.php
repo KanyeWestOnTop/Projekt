@@ -18,16 +18,12 @@ class LoginController extends DefaultController
         
         if ($user) {
             $_SESSION['user'] = $user;
-            $_SESSION['userId'] = $user->getId();
-            $this->redirect("/");
         } else {
             $this->render("login.html.twig", [
                 "error" => "Invalid email or password"
             ]);
-
-            die();
-
         }
+        $this->redirect("/");
     }
     
 
