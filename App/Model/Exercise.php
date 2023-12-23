@@ -39,6 +39,7 @@ class Exercise
         $gateway = new ExerciseGateway();
         $gateway->delete($this->id);
     }
+    
     public static function all(): array
     {
         $gateway = new ExerciseGateway();
@@ -48,7 +49,6 @@ class Exercise
             $exercise = new Exercise();
             $exercise->id = $dbExercise["id"];
             $exercise->setName($dbExercise["name"]);
-
             $exercises[] = $exercise;
         }
         return $exercises;

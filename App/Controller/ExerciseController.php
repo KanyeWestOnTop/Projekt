@@ -10,6 +10,7 @@ class ExerciseController extends DefaultController
     public function index()
     {
         $exercises = Exercise::all();
+        
         $this->render("exercises.html.twig", [
             "exercises" => $exercises,
         ]);
@@ -19,6 +20,7 @@ class ExerciseController extends DefaultController
         $rules = [
             "name" => "required|alpha",
         ];
+        
 
         $this->validate($data, $rules);
 

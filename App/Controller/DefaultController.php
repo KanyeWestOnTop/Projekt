@@ -35,7 +35,7 @@ class DefaultController {
         $response = $this->validator->validate($values, $rules);
         
         if(count($response) > 0) {
-            $values['error'] = $response;
+            $values['errors'] = $response;
             $values = array_merge($values, unserialize($_SESSION['params']));
 
             $this->render($_SESSION['template'], $values);
