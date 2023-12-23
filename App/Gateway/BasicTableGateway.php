@@ -18,11 +18,13 @@ abstract class BasicTableGateway {
 
     public function all(): array {
         $sql = $this->connection->prepare("SELECT * FROM $this->table");
+        $sql->execute();
         return $sql->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function findById(int $id): array|false {
         $sql = $this->connection->prepare("SELECT * FROM $this->table WHERE $this->primary = $id"); 
+        $sql->execute();
         return $sql->fetch(PDO::FETCH_ASSOC);
     }
 
