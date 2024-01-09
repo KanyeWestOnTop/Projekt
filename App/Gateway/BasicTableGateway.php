@@ -97,6 +97,13 @@ abstract class BasicTableGateway {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function findByUserId(int $user_id): array {
+        $sql = "SELECT * FROM $this->table WHERE user_id = $user_id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function findByFields(array $fields): array|false {
         $sql = "SELECT * FROM $this->table WHERE ";
         $index = 0;

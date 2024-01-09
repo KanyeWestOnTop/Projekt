@@ -9,22 +9,31 @@ class ExerciseController extends DefaultController
 
     public function index()
     {
-        $exercises = Exercise::all();
-        
+
+
+        $userId = $_SESSION['user']->getId();
+        $exercises = Exercise::findByUserId($userId);
+
+
         $this->render("exercises.html.twig", [
             "exercises" => $exercises,
         ]);
     }
+
     public function store(array $data)
     {
         $rules = [
             "name" => "required|alpha",
         ];
-        
+
 
         $this->validate($data, $rules);
 
         $exercise = new Exercise();
+        if (isset($_SESSION['user'])) {
+            $userId = $_SESSION['user']->getId();
+            $exercise->setUserId($userId);
+        }
         $exercise->setName($data['name']);
         $exercise->save();
         $this->redirect("/exercises");
@@ -60,5 +69,4 @@ class ExerciseController extends DefaultController
         $exercise->delete();
         $this->redirect("/exercises");
     }
-
 }

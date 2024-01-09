@@ -1,7 +1,7 @@
-body {
-    background-color: #d0cee2;
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-    height: 100%;
+.form-group label {
+    margin-bottom: 0.5rem; 
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
 }

@@ -12,6 +12,7 @@ CREATE TABLE user
 CREATE TABLE exercise 
 (
 	id int not null auto_increment Primary Key,
+    user_id int not null,
 	name VARCHaR(255)
 );
 CREATE TABLE progress
@@ -26,8 +27,9 @@ CREATE TABLE progress
     foreign key (exercise_id) references exercise(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-Insert into exercise(name) Values("Benchpress");
+
 Insert into user(email, password, prename, lastname) Values ("marrerkevin@gmail.com",
  "hallo123", "Kevin", "Marrer");
+ Insert into exercise(user_id ,name) Values(1, "Benchpress");
 INSERT INTO progress(user_id, exercise_id, weight, reps, date) VALUES (1, 1, 100, 10, "2020-01-01");
  

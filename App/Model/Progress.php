@@ -135,6 +135,7 @@ class Progress
     private static function create(array $tmpProgress): Progress
     {
         $progress = new Progress();
+        
         $progress->id = $tmpProgress["id"];
         $progress->reps = ($tmpProgress["reps"]);
         $progress->weight = ($tmpProgress["weight"]);

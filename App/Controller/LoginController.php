@@ -14,13 +14,13 @@ class LoginController extends DefaultController
     }
 
     public function login(array $values) {
-        $user = User::findByEmailAndPassword($values['email'], $values['password']);
-        
+         $user = User::findByEmailAndPassword($values['email'], $values['password']);
+
         if ($user) {
             $_SESSION['user'] = $user;
         } else {
-            $this->render("login.html.twig", [
-                "errors" => "Invalid email or password"
+            return $this->render("login.html.twig", [
+                "errors" => "Benutzername oder Passwort falsch!"
             ]);
         }
         $this->redirect("/");

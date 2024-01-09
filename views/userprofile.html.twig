@@ -4,19 +4,27 @@
 {% block title %}Profile
 {% endblock %}
 {% block content %}
-	<div class="row">
-		<h1>Currently logged in as</h1>
-		<p>{{ user.name }}</p>
-		<p>{{ user.email }}</p>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <h1>Currently logged in as</h1>
+                <p>{{ user.name }}</p>
+                <p>{{ user.email }}</p>
+            </div>
+            <div class="col-md-6">
+                <h1>Change password</h1>
+                <form action="/user/changepassword" method="post" class="mb-4">
+                    <div class="form-group">
+                        <label for="password">New password</label>
+                        <input type="password" name="password" class="form-control" id="password" placeholder="New password" >
+                    </div>
+                    <button type="submit" class="btn btn-primary">Change password</button>
 
-		<h1>Change password</h1>
-		<form action="/user/changepassword" method="post">
-			<input type="password" name="password" placeholder="New password">
-			<input type="submit" value="Change password">
-
-			{% if error %}
-				<p>{{ error }}</p>
-			{% endif %}
-		</form>
-	</div>
+                    {% if error %}
+                        <p class="text-danger mt-2">{{ error }}</p>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}

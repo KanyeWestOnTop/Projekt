@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Model\Progress;
 use App\Model\Exercise;
-use App\Model\User;
 
 class ProgressController extends DefaultController
 {
@@ -24,12 +23,13 @@ class ProgressController extends DefaultController
         $this->render("progress-history.html.twig", [
             "exercise" => $exercise,
             "progresses" => $progresses
-                ]);
+        ]);
     }
 
     public function create()
-    {        
-        $exercises = Exercise::all();
+    {
+        $userId = $_SESSION['user']->getId();
+        $exercises = Exercise::findByUserId($userId);
         $this->render("progress-form.html.twig", [
             "exercises" => $exercises
         ]);
@@ -58,7 +58,10 @@ class ProgressController extends DefaultController
         $progress = new Progress();
         $progress->setWeight($data['weight']);
         $progress->setReps($data['reps']);
-        $progress->setDate($data['date']);
+        $dateObject = \DateTime::createFromFormat('d-m-Y', $data['date']);
+        $formattedDate = $dateObject->format('Y-m-d');
+
+        $progress->setDate($formattedDate);
         if (isset($data['exercise_id'])) {
             $progress->setExerciseId($data['exercise_id']);
         } else {
@@ -69,7 +72,7 @@ class ProgressController extends DefaultController
         if (isset($_SESSION['user'])) {
             $userId = $_SESSION['user']->getId();
             $progress->setUserId($userId);
-        } 
+        }
         $exercise_id = $progress->getExerciseId();
         $progress->save();
         $this->redirect("/progresses/$exercise_id");
@@ -98,7 +101,9 @@ class ProgressController extends DefaultController
         $progress = Progress::findById($id);
         $progress->setWeight($data['weight']);
         $progress->setReps($data['reps']);
-        $progress->setDate($data['date']);
+        $dateObject = \DateTime::createFromFormat('d-m-Y', $data['date']);
+        $formattedDate = $dateObject->format('Y-m-d');
+        $progress->setDate($formattedDate);
         $progress->save();
         $exercise_id = $progress->getExerciseId();
         $this->redirect("/progresses/$exercise_id");

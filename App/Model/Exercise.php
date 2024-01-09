@@ -7,7 +7,9 @@ use App\Gateway\ExerciseGateway;
 class Exercise
 {
     private int $id = 0;
+    private int $user_id = 0;   
     private string $name = "";
+
 
     public function getId(): int
     {
@@ -16,6 +18,14 @@ class Exercise
     public function setId(int $id)
     {
         $this->id = $id;
+    }
+    public function getUserId(): int
+    {
+        return $this->user_id;
+    }
+    public function setUserId(int $user_id)
+    {
+        $this->user_id = $user_id;
     }
     public function setName(string $name)
     {
@@ -67,10 +77,26 @@ class Exercise
         }
         return $exercise;
     }
+
+    public static function findByUserId(int $user_id): array
+    {
+        $gateway = new ExerciseGateway();
+        $exercises = [];
+        $dbExercises = $gateway->findByUserId($user_id);
+        foreach ($dbExercises as $dbExercise) {
+            $exercise = new Exercise();
+            $exercise->id = $dbExercise["id"];
+            $exercise->setName($dbExercise["name"]);
+            $exercises[] = $exercise;
+        }
+        return $exercises;
+    }
+
     private static function create(array $tmpExercise): Exercise
     {
         $exercise = new Exercise();
         $exercise->id = $tmpExercise["id"];
+        $exercise->user_id = $tmpExercise["user_id"];
         $exercise->name = ($tmpExercise["name"]);
         return $exercise;
     }
@@ -78,7 +104,8 @@ class Exercise
     private function getAttributesAsAssociativeArray(): array
     {
         return [
-            "name" => $this->name
+            "name" => $this->name,
+            "user_id" => $this->user_id,
         ];
     }
 }

@@ -1,0 +1,21 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+}
+
+.footer {
+    width: 100%;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

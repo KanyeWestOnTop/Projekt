@@ -4,36 +4,37 @@
 {% block title %}Exercises
 {% endblock %}
 {% block content %}
-	<div class="row">
-		<h1>These are the exercises</h1>
-		<table>
-			<tr>
-				<th>Exercise</th>
-				<th>Progress</th>
-				<th>Delete</th>
-				<th>Edit</th>
-			</tr>
-			{% for exercise in exercises %}
-				<tr>
-					<td>
-						<div class="exec">{{ exercise.name }}</div>
-					</td>
-					<td>
-						<a href="/progresses/{{ exercise.id }}" class="btn btn-success moove">-> Progress</a>
-					</td>
-					<td>
-						<form method="POST" action="/exercises/{{ exercise.id }}">
-							<input type="hidden" id="_method" name="_method" value="DELETE"/>
-							<button class="btn btn-danger moove">Löschen</button>
-						</form>
-					</td>
-					<td>
-						<a href="/exercises/{{ exercise.id }}" class="btn btn-warning moove">Edit</a>
-					</td>
-				</tr>
-			{% endfor %}
-		</table>
-		<a href="/exercise/create" class="btn btn-primary">Add Exercise</a>
-		<a href="/" class="btn btn-success home ">Home</a>
-	</div>
+	<div class="container mt-5">
+    <h1 class="display-4 mb-4">Exercise List</h1>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Exercise</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exercise in exercises %}
+                    <tr>
+                        <td>{{ exercise.name }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="/progresses/{{ exercise.id }}" class="btn btn-success">View Progress</a>
+                                <a href="/exercises/{{ exercise.id }}" class="btn btn-warning">Edit</a>
+                                <form method="POST" action="/exercises/{{ exercise.id }}" class="delete-form">
+                                    <input type="hidden" id="_method" name="_method" value="DELETE"/>
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="d-flex justify-content-end">
+        <a href="/exercise/create" class="btn btn-primary">Add Exercise</a>
+    </div>
+</div>
 {% endblock %}
