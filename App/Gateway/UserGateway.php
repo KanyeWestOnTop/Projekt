@@ -12,9 +12,4 @@ class UserGateway extends BasicTableGateway {
         "lastname"];
     
 }
-
-
-
-
-
 ?> 

@@ -4,27 +4,57 @@
 {% block title %}Profile
 {% endblock %}
 {% block content %}
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <h1>Currently logged in as</h1>
-                <p>{{ user.name }}</p>
-                <p>{{ user.email }}</p>
-            </div>
-            <div class="col-md-6">
-                <h1>Change password</h1>
-                <form action="/user/changepassword" method="post" class="mb-4">
-                    <div class="form-group">
-                        <label for="password">New password</label>
-                        <input type="password" name="password" class="form-control" id="password" placeholder="New password" >
-                    </div>
-                    <button type="submit" class="btn btn-primary">Change password</button>
+	<div class="row mt-3">
+		<div class="col-md-6">
+			<h1>Currently logged in as</h1>
+			<p>{{ user.name }}</p>
+			<p>{{ user.email }}</p>
+		</div>
+		<div class="col-md-6">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Change Email</th>
+						<th>Change Password</th>
+						<th>Delete User</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<a href="/userprofile/changeemail" class="change">Change Email</a>
+						</td>
+						<td>
+							<a href="/userprofile/changepassword" class="change">Change Password</a>
+						</td>
+						<td>
+							<a class="change" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete User</a>
+						</td>
 
-                    {% if error %}
-                        <p class="text-danger mt-2">{{ error }}</p>
-                    {% endif %}
-                </form>
-            </div>
-        </div>
-    </div>
+						<!-- Modal -->
+						<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h1 class="modal-title fs-5" id="exampleModalLabel">User Delete</h1>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body text-danger">
+                                        Do u really want to delete this User
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<form action="/user/deleteconfirm" method="POST">
+											<input type="hidden" name="_method" value="DELETE">
+											<button type="submit" class="btn btn-danger">Delete</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 {% endblock %}

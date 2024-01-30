@@ -8,28 +8,26 @@ use App\Model\Exercise;
 class ProgressController extends DefaultController
 {
 
-    public function index()
-    {
-        $progresses = Progress::all();
-        $this->render("progress-history.html.twig", [
-            "progresses" => $progresses
-        ]);
-    }
-
     public function show(int $id)
     {
         $exercise = Exercise::findById($id);
         $progresses = Progress::findByExerciseId($id);
-        $this->render("progress-history.html.twig", [
-            "exercise" => $exercise,
-            "progresses" => $progresses
-        ]);
+
+        if ($exercise->getUserId() !== $_SESSION['user']->getId()) {
+            $this->redirect("/");
+        } else {
+            $this->render("progress-history.html.twig", [
+                "exercise" => $exercise,
+                "progresses" => $progresses
+            ]);
+        }
     }
 
     public function create()
     {
         $userId = $_SESSION['user']->getId();
         $exercises = Exercise::findByUserId($userId);
+
         $this->render("progress-form.html.twig", [
             "exercises" => $exercises
         ]);
@@ -39,6 +37,7 @@ class ProgressController extends DefaultController
     {
         $exercise = Exercise::findById($id);
         $_SESSION['exercise'] = $exercise->getId();
+
         $this->render("progress-form.html.twig", [
             "exercise" => $exercise
         ]);
@@ -47,8 +46,8 @@ class ProgressController extends DefaultController
     public function store(array $data)
     {
         $rules = [
-            "weight" => "required|numeric",
-            "reps" => "required|numeric",
+            "weight" => "required|numeric|max:100",
+            "reps" => "required|numeric|max:100",
             "date" => "required|date",
             "exercise_id" => "required"
         ];
@@ -58,7 +57,8 @@ class ProgressController extends DefaultController
         $progress = new Progress();
         $progress->setWeight($data['weight']);
         $progress->setReps($data['reps']);
-        $dateObject = \DateTime::createFromFormat('d-m-Y', $data['date']);
+
+        $dateObject = \DateTime::createFromFormat('d.m.Y', $data['date']);
         $formattedDate = $dateObject->format('Y-m-d');
 
         $progress->setDate($formattedDate);
@@ -69,10 +69,12 @@ class ProgressController extends DefaultController
             $exerciseId = $exercise->getId();
             $progress->setExerciseId($exerciseId);
         }
+
         if (isset($_SESSION['user'])) {
             $userId = $_SESSION['user']->getId();
             $progress->setUserId($userId);
         }
+
         $exercise_id = $progress->getExerciseId();
         $progress->save();
         $this->redirect("/progresses/$exercise_id");
@@ -82,17 +84,23 @@ class ProgressController extends DefaultController
     {
         $exercise = Progress::findById($id)->getExercise();
         $progress = Progress::findById($id);
-        $this->render("progress-form.html.twig", [
-            "progress" => $progress,
-            "exercise" => $exercise
-        ]);
+
+
+        if ($exercise->getUserId() !== $_SESSION['user']->getId()) {
+            $this->redirect("/");
+        } else {
+            $this->render("progress-form.html.twig", [
+                "progress" => $progress,
+                "exercise" => $exercise
+            ]);
+        }
     }
 
     public function update(int $id, array $data)
     {
         $rules = [
-            "weight" => "required|numeric",
-            "reps" => "required|numeric",
+            "weight" => "required|numeric|max:100",
+            "reps" => "required|numeric|max:100",
             "date" => "required|date"
         ];
 
@@ -101,8 +109,10 @@ class ProgressController extends DefaultController
         $progress = Progress::findById($id);
         $progress->setWeight($data['weight']);
         $progress->setReps($data['reps']);
-        $dateObject = \DateTime::createFromFormat('d-m-Y', $data['date']);
+
+        $dateObject = \DateTime::createFromFormat('d.m.Y', $data['date']);
         $formattedDate = $dateObject->format('Y-m-d');
+
         $progress->setDate($formattedDate);
         $progress->save();
         $exercise_id = $progress->getExerciseId();

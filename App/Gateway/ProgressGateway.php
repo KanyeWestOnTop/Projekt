@@ -13,3 +13,4 @@ class ProgressGateway extends BasicTableGateway {
             "user_id"
         ];
 }
+?>

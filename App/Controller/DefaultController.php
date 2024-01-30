@@ -15,6 +15,7 @@ class DefaultController {
     public function __construct() {
         $loader = new FilesystemLoader("views");
         $this->twig = new Environment($loader);
+        
         $this->twig->addGlobal("session", $_SESSION);
         $this->validator = new Validator();
     }

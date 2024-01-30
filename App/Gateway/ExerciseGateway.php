@@ -9,9 +9,4 @@ class ExerciseGateway extends BasicTableGateway {
         "user_id",
         "name"];
 }
-
-
-
-
-
 ?>

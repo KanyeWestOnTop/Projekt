@@ -25,7 +25,6 @@ class LoginController extends DefaultController
         }
         $this->redirect("/");
     }
-    
 
     public function logout()
     {

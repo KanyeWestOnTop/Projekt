@@ -4,20 +4,25 @@
 {% block title %}Exercises Form
 {% endblock %}
 {% block content %}
-	<div class="container mt-5">
-    <h1 class="display-4 mb-4">{{ exercise ? 'Edit Exercise' : 'Create New Exercise' }}</h1>
-    <form method="POST" action="{% if exercise or _method == 'PUT' %}/exercises/{{ exercise.id ?? id }}{% else %}/exercises{% endif %}" class="mb-4">
-        {% if exercise or _method == 'PUT' %}
-            <input type="hidden" id="_method" name="_method" value="PUT"/>
-        {% endif %}
-        <div class="mb-3">
-            <label for="name" class="form-label">Exercise:</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{ name ?? exercise.name }}" >
-            {% if errors['name'] %}
-                <div class="text-danger">{{ errors['name'] | raw }}</div>
-            {% endif %}
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-</div>
+	<div class="row">
+		{% if exercise %}
+			<h1 class="display-4 mb-4 mt-3">Edit Exercise for
+				{{ exercise.name }}</h1>
+		{% else %}
+			<h1 class="display-4 mb-4 mt-3">New Exercise</h1>
+		{% endif %}
+		<form method="POST" action="{% if exercise or _method == 'PUT' %}/exercises/{{ exercise.id ?? id }}{% else %}/exercises{% endif %}" class="mb-4">
+			{% if exercise or _method == 'PUT' %}
+				<input type="hidden" id="_method" name="_method" value="PUT"/>
+			{% endif %}
+			<div class="mb-3">
+				<label for="name" class="form-label">Exercise:</label>
+				<input type="text" class="form-control mb-2" id="name" name="name" value="{{ name ?? exercise.name }}">
+				{% if errors['name'] %}
+					<div class="text-danger">{{ errors['name'] | raw }}</div>
+				{% endif %}
+			</div>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+	</div>
 {% endblock %}

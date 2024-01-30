@@ -1,48 +1,52 @@
 {% extends "layout.html.twig" %}
-{% block styles %}register{% endblock %}
-{% block title %}Register Page{% endblock %}
-{% block content %}
-    <div class="wrapper">
-        <div class="registration_form">
-            <h1>Register</h1>
-            <form action="/register" method="POST">
-                <div class="form_wrap">
-                    <div class="input_wrap">
-                        <label for="prename">Name</label>
-                        <input type="text" name="prename" id="prename" placeholder="Enter name">
-                        {% if errors["prename"] %}
-                            <div class="error">{{ errors["prename"] | raw}}</div>
-                        {% endif %}
-                    </div>
-                    <div class="input_wrap">
-                        <label for="lastname">Lastname</label>
-                        <input type="text" name="lastname" id="lastname" placeholder="Enter lastname">
-                        {% if errors["lastname"] %}
-                            <div class="error">{{ errors["lastname"] | raw}}</div>
-                        {% endif %}
-                    </div>
-                    <div class="input_wrap">
-                        <label for="email">Email address</label>
-                        <input type="text" name="email" id="email" placeholder="Enter email">
-                        {% if errors["email"] %}
-                            <div class="error">{{ errors["email"] | raw }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="input_wrap">
-                        <label for="password">Password</label>
-                        <input type="password" name="password" id="password" placeholder="NEWJEANS">
-                        {% if errors["password"] %}
-                            <div class="error">{{ errors["password"] | raw }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="input_wrap">
-                        <a href="/login" class="login">Already have an account? Login</a>
-                    </div>
-                    <div class="input_wrap">
-                        <button type="submit" class="submit_btn">Submit</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+{% block styles %}register
 {% endblock %}
+{% block title %}Register Page
+{% endblock %}
+{% block content %}
+	<div class="row mt-3">
+		<div class="wrapper">
+			<div class="registration_form">
+				<h1 class="text-center">Register</h1>
+				<form action="/register" method="POST">
+					<div class="form_wrap">
+						<div class="input_wrap">
+							<label for="prename">Name</label>
+							<input type="text" name="prename" id="prename" placeholder="Enter name" value="{{ prename }}">
+							{% if errors["prename"] %}
+								<div class="error">{{ errors["prename"] | raw}}</div>
+							{% endif %}
+						</div>
+						<div class="input_wrap">
+							<label for="lastname">Lastname</label>
+							<input type="text" name="lastname" id="lastname" placeholder="Enter lastname" value="{{ lastname }}">
+							{% if errors["lastname"] %}
+								<div class="error">{{ errors["lastname"] | raw}}</div>
+							{% endif %}
+						</div>
+						<div class="input_wrap">
+							<label for="email">Email address</label>
+							<input type="text" name="email" id="email" placeholder="Enter email" value="{{ email }}">
+							{% if errors["email"] %}
+								<div class="error">{{ errors["email"] | raw }}</div>
+							{% endif %}
+						</div>
+						<div class="input_wrap">
+							<label for="password">Password</label>
+							<input type="password" name="password" id="password" placeholder="•••••••••" value="{{ password }}">
+							{% if errors["password"] %}
+								<div class="error">{{ errors["password"] | raw }}</div>
+							{% endif %}
+						</div>
+						<div class="input_wrap">
+							<a href="/login" class="login">Already have an account? Login</a>
+						</div>
+						<div class="input_wrap">
+							<button type="submit" class="submit_btn">Submit</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+    </div>
+	{% endblock %}

@@ -30,6 +30,6 @@ CREATE TABLE progress
 
 Insert into user(email, password, prename, lastname) Values ("marrerkevin@gmail.com",
  "hallo123", "Kevin", "Marrer");
- Insert into exercise(user_id ,name) Values(1, "Benchpress");
+Insert into exercise(user_id ,name) Values(1, "Benchpress");
 INSERT INTO progress(user_id, exercise_id, weight, reps, date) VALUES (1, 1, 100, 10, "2020-01-01");
  

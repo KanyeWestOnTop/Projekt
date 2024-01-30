@@ -41,18 +41,10 @@ input {
 }
 
 .btn-primary {
-    display: block;
     width: 100%;
-    padding: 10px;
     box-sizing: border-box;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
 }
 
 .register {
     display: block;
-   
 }

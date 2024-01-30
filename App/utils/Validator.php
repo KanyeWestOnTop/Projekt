@@ -23,7 +23,7 @@ class Validator
                     $this->checkArrayKey($response, $field);
                     $response[$field] .= "The $field field must be numeric.";
                 }
-                if ($rule === "date" && !preg_match("/^\d{2}-\d{2}-\d{4}$/", $values[$field])) {
+                if ($rule === "date" && !preg_match("/^\d{2}.\d{2}.\d{4}$/", $values[$field])) {
                     $this->checkArrayKey($response, $field);
                     $response[$field] .= "The $field field must be a date.";
                 }
@@ -35,7 +35,14 @@ class Validator
                     $this->checkArrayKey($response, $field);
                     $response[$field] .= "The $field field must be a valid email address.";
                 }
-                
+                if ($rule === "min:8" && strlen($values[$field]) < 8) {
+                    $this->checkArrayKey($response, $field);
+                    $response[$field] .= "The $field field must be at least 8 characters in length.";
+                }
+                if ($rule === "max:100" && strlen($values[$field]) > 100) {
+                    $this->checkArrayKey($response, $field);
+                    $response[$field] .= "The $field field must be less than 100 characters in length.";
+                }
             }
         }
 

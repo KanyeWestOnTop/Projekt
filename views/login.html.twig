@@ -7,7 +7,7 @@
 	<div class="row">
 		<form method="POST" action="/login">
 			<div class="login">
-				<h1>Login</h1>
+				<h1 class="text-center">Login</h1>
 
 				<div class="form-group">
 					<label for="email">Email address</label>
@@ -17,12 +17,12 @@
 					<input type="password" class="form-control" id="password" name="password">
 				</div>
 				{% if errors %}
-					<span class="fn-bold text-danger">{{ errors }}</span>
+					<span class="m-5 fn-bold text-danger">{{ errors }}</span>
 				{% endif %}
-				<button type="submit" class="btn btn-primary">Submit</button>
+				<button type="submit" class="btn btn-primary mt-3">Submit</button>
 			</form>
 			<br>
-			<a href="/register" class="register">Register</a>
+			<a href="/register" class="register mt-2">Register</a>
 		</div>
 
 	</div>
