@@ -4,12 +4,27 @@
 {% block title %}Profile
 {% endblock %}
 {% block content %}
-	<div class="row mt-3">
-		<div class="col-md-6">
-			<h1>Currently logged in as</h1>
-			<p>{{ user.name }}</p>
-			<p>{{ user.email }}</p>
-		</div>
+	    <div class="row mt-3">
+        <div class="col-md-6">
+            <h1>Currently logged in as</h1>
+            <p>{{ user.name }}</p>
+            <p>{{ user.email }}</p>
+        </div>
+        <div class="col-md-6">
+			<h1>Top Lifts</h1>
+
+            {% for exerciseName, liftData in topLifts %}
+                {% if liftData.exercise and liftData.weight is not null and liftData.date is not null %}
+                    <h1>{{ exerciseName }} - Top Lift</h1>
+                    <p>Weight: {{ liftData.weight }} KG Reps: {{ liftData.reps }} on {{ liftData.date|date('d.m. Y') }}</p>
+					<a href="/progresses/{{ liftData.exercise_id }}" class="btn btn-primary">View Exercise</a>
+					<hr>
+                {% else %}
+                    <p>No recorded progress for this exercise: <span class="fw-bold">{{exerciseName}}</span></p>
+                {% endif %}
+            {% endfor %}
+        </div>
+
 		<div class="col-md-6">
 			<table class="table table-striped">
 				<thead>
@@ -40,7 +55,7 @@
 										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 									</div>
 									<div class="modal-body text-danger">
-                                        Do u really want to delete this User
+										Do u really want to delete this User
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -53,13 +53,11 @@ if ($authenticated->handle()) {
         } else if ($httpMethod === "POST") {
             $controller->store($_POST);
         }
-        die();
     }
 
     if ($uri === "/exercise/create") {
         $controller = new ExerciseController();
         $controller->create();
-        die();
     }
 
     if (preg_match("#/exercises/\d+$#", $uri)) {
@@ -73,7 +71,6 @@ if ($authenticated->handle()) {
         } else if ($httpMethod === "POST" && isset($_POST["_method"]) && $_POST["_method"] === "DELETE") {
             $controller->delete($matches[0]);
         }
-        die();
     }
 
     if ($uri === "/progress") {
@@ -81,7 +78,6 @@ if ($authenticated->handle()) {
         if ($httpMethod === "POST") {
             $controller->store($_POST);
         }
-        die();
     }
 
     if (preg_match("#/progresses/\d+$#", $uri)) {
@@ -93,13 +89,11 @@ if ($authenticated->handle()) {
         } else if ($httpMethod === "POST") {
             $controller->store($_POST);
         }
-        die();
     }
 
     if ($uri === "/progress/create") {
         $controller = new ProgressController();
         $controller->create();
-        die();
     }
 
     if (preg_match("#/progress/\d+$#", $uri)) {
@@ -113,7 +107,6 @@ if ($authenticated->handle()) {
         } else if ($httpMethod === "POST" && isset($_POST["_method"]) && $_POST["_method"] === "DELETE") {
             $controller->delete($matches[0]);
         }
-        die();
     }
 
     if (preg_match("#/progress/create/\d+$#", $uri)) {
@@ -123,19 +116,16 @@ if ($authenticated->handle()) {
         if ($httpMethod === "GET") {
             $controller->createthis($matches[0]);
         } 
-        die();
     }
 
     if ($uri === "/profile") {
         $controller = new UserController();
         $controller->info();
-        die();
     }
 
     if ($uri === "/userprofile/changepassword") {
         $controller = new UserController();
         $controller->changepassword();
-        die();
     }
 
     if ($uri === "/user/changepassword") {
@@ -145,13 +135,11 @@ if ($authenticated->handle()) {
         } else if ($httpMethod === "POST") {
             $controller->updatepassword($_POST);
         }
-        die();
     }
 
     if ($uri === "/userprofile/changeemail") {
         $controller = new UserController();
         $controller->changeemail();
-        die();
     }
 
     if ($uri === "/user/changeemail") {
@@ -161,7 +149,6 @@ if ($authenticated->handle()) {
         } else if ($httpMethod === "POST") {
             $controller->updateemail($_POST);
         }
-        die();
     }
 
     if ($uri === "/user/deleteconfirm") {
@@ -169,17 +156,13 @@ if ($authenticated->handle()) {
         if ($httpMethod === "POST" && isset($_POST["_method"]) && $_POST["_method"] === "DELETE") {
             $controller->delete($_SESSION['user']->getId());
         }
-        die();
     }
 
     if ($uri === "/") {
         $controller = new HomeController();
         $controller->index();
-        die();
     }
     
 } 
 
-$notfound = new HomeController();
-$notfound->notfound();
-die();
+

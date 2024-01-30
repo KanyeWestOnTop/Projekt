@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Model\User;
+use App\Model\Progress;
+use App\Model\Exercise;
 
 
 class UserController extends DefaultController
@@ -105,13 +107,32 @@ class UserController extends DefaultController
     }
 
     public function info()
-    {
-        $user = User::findById($_SESSION['user']->getId());
-        $this->render(
-            "userprofile.html.twig",
-            [
-                "user" => $user
-            ]
-        );
+{
+    $user = User::findById($_SESSION['user']->getId());
+    $exercises = Exercise::findByUserId($_SESSION['user']->getId());
+    $topLifts = [];
+
+    foreach ($exercises as $exercise) {
+        $progressData = Progress::getExerciseWithMostWeight($exercise->getId());
+        $topLifts[$exercise->getName()] = [
+            'exercise' => $exercise,
+            'exercise_id' => $exercise->getId(),
+            'weight' => $progressData["weight"],
+            'date' => $progressData["date"],
+            'reps' => $progressData["reps"]
+        ];
     }
+
+    $this->render(
+        "userprofile.html.twig",
+        [
+            "user" => $user,
+            "topLifts" => $topLifts,
+        ]
+    );
+}
+
+    
+
+
 }

@@ -86,7 +86,7 @@ class Progress
             $progress->setReps($dbProgress["reps"]);
             $progress->setWeight($dbProgress["weight"]);
             $progress->setDate($dbProgress["date"]);
-            
+
 
             $progresses[] = $progress;
         }
@@ -113,29 +113,32 @@ class Progress
         return $progress;
     }
 
-    public static function findByExerciseId(int $exerciseId): array
-    {
-        $gateway = new ProgressGateway();
-        $progresses = [];
-        $dbProgresses = $gateway->findByFields([
-            "exercise_id" => $exerciseId
-        ]);
-        foreach ($dbProgresses as $dbProgress) {
-            $progress = self::create($dbProgress);
-            $progresses[] = $progress;
-        }
-        return $progresses;
+    public static function findByExerciseId(int $exerciseId, string $orderBy = 'date DESC'): array
+{
+    $gateway = new ProgressGateway();
+    $progresses = [];
+    
+    $dbProgresses = $gateway->findByFields([
+        "exercise_id" => $exerciseId
+    ], $orderBy);
+
+    foreach ($dbProgresses as $dbProgress) {
+        $progress = self::create($dbProgress);
+        $progresses[] = $progress;
     }
 
-    public function getExercise (): Exercise
+    return $progresses;
+}
+
+    public function getExercise(): Exercise
     {
         return Exercise::findById($this->exercise_id);
     }
-    
+
     private static function create(array $tmpProgress): Progress
     {
         $progress = new Progress();
-        
+
         $progress->id = $tmpProgress["id"];
         $progress->reps = ($tmpProgress["reps"]);
         $progress->weight = ($tmpProgress["weight"]);
@@ -149,6 +152,28 @@ class Progress
         $gateway = new ProgressGateway();
         $gateway->delete($this->id);
     }
+
+    public static function getExerciseWithMostWeight(int $exerciseId): array
+    {
+        $gateway = new ProgressGateway();
+        $progressData = $gateway->getExerciseWithMostWeight($_SESSION['user']->getId(), $exerciseId);
+
+        if (!$progressData) {
+            return [];
+        }
+
+        $exercise = Exercise::findById($exerciseId);
+
+        return [
+            "exercise" => $exercise,
+            "exercise_id" => $exercise->getId(),
+            "weight" => $progressData["weight"],
+            "date" => $progressData["date"],
+            "reps" => $progressData["reps"]
+        ];
+    }
+
+
     private function getAttributesAsAssociativeArray(): array
     {
         return [

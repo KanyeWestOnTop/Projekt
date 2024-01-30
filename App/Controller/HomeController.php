@@ -7,7 +7,7 @@ class HomeController extends DefaultController {
         $this->render("home.html.twig");
     }
 
-    public function notfound() {
+    /*public function notfound() {
         $this->render("404.html");
-    }
+    }*/
 }
